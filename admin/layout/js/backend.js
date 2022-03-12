@@ -10,4 +10,10 @@ $(function () {
 
   });
 
+  // Confirmation message on button
+
+  $('.confirm').click(function () {
+    return confirm('Are you sure?');
+  });
+
 });

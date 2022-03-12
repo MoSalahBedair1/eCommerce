@@ -15,3 +15,18 @@
           echo 'Default';
       }
   }
+
+
+/*
+ ** Home redirect function [this function accept parameters]
+ ** $erroMsg = Echo the error message
+ ** $seconds = seconds before redirecting
+ */
+
+  function redirectHome($errorMsg, $seconds = 3)
+  {
+      echo '<div class="alert alert-danger">' . $errorMsg . '</div>';
+      echo '<div class="alert alert-info">You will be redirected to homepage after ' . $seconds . ' seconds.</div>';
+      header('refresh:' . $seconds . ';url=index.php');
+      exit();
+  }

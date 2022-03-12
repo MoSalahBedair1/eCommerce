@@ -46,7 +46,7 @@ $pageTitle = 'Members';
             echo '<td></td>';
             echo '<td>
             <a href="members.php?do=Edit&userid=' . $row['UserID'] . '" class="btn btn-success">Edit</a>
-            <a href="#" class="btn btn-danger">Delete</a>
+            <a href="members.php?do=Delete&userid=' . $row['UserID'] . '" class="btn btn-danger confirm">Delete</a>
             </td>';
         } ?>
     </table>
@@ -155,7 +155,8 @@ $pageTitle = 'Members';
                   echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Inserted' . '</div>';
               }
           } else {
-              echo 'Sorry You can\'t browser this page directly';
+              $erroMsg = 'Sorry You can\'t browser this page directly';
+              redirectHome($erroMsg, 6);
           }
           echo '</div>';
       } elseif ($do == 'Edit') { // Edit Page
@@ -289,6 +290,43 @@ $pageTitle = 'Members';
               }
           } else {
               echo 'Sorry You can\'t browser this page directly';
+          }
+          echo '</div>';
+      } elseif ($do = 'Delete') {
+          // Delete Member Page
+
+          echo '<h1 class="text-center">Delete Member</h1>';
+          echo '<div class="container">';
+
+          // Check if get reqest userid is numeric & get the interger value of of it
+
+          $userid = isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) : 0;
+
+          // Select all data depend on this id
+          
+          $stmt = $con->prepare('SELECT * FROM users WHERE UserID = ? LIMIT 1');
+          
+          // Execute query
+          
+          $stmt->execute(array($userid));
+          
+          // Fetch the data
+          
+          $row = $stmt->fetch();
+          
+          // The row count
+          
+          $count = $stmt->rowCount();
+          
+          // If there's such ID Show the form
+          
+          if ($stmt->rowCount() > 0) {
+              $stmt = $con->prepare('DELETE FROM users WHERE UserID = :zuser');
+              $stmt->bindParam(':zuser', $userid);
+              $stmt->execute();
+              echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Deleted' . '</div>';
+          } else {
+              echo 'This ID is Not Exist';
           }
           echo '</div>';
       }
