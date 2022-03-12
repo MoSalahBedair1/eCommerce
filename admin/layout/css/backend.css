@@ -91,9 +91,24 @@ h1 {
   color: #666;
 }
 
-.main-table tr:first-child {
+.main-table {
+  -webkit-box-shadow: 0 3px 10px #ccc;
+  -moz-box-shadow: 0 3px 10px #ccc;
+  box-shadow: 0 3px 10px #ccc;
+}
+
+.main-table td {
+  background-color: #fff;
+  vertical-align: middle !important;
+}
+
+.main-table tr:first-child td { /* You can use thead */
   background-color: #333;
   color: #fff;
+}
+
+.main-table .btn {
+  padding: 3px 10px;
 }
 
 /* ُُEnd members page */
