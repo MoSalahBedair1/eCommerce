@@ -160,7 +160,10 @@ $pageTitle = 'Members';
                     'zname' => $name
                   ));
                       // Echo Success Message
-                      echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Inserted' . '</div>';
+                      echo '<div class="container">';
+                      $theMsg = '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Inserted' . '</div>';
+                      redirect($theMsg, 'back');
+                      echo '</div>';
                   }
               }
           } else {
@@ -250,7 +253,10 @@ $pageTitle = 'Members';
 
 <?php
       } else { // If there's no such ID show error message
-          echo 'There\'s No Such ID';
+          echo "<div class='container'>";
+          $theMsg = '<div class="alert alert-danger">There\'s No Such ID</div>';
+          redirect($theMsg);
+          echo "</div>";
       }
       } elseif ($do == 'Update') { // Update Page
           echo '<h1 class="text-center">Update Member</h1>';
