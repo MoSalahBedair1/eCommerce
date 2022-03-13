@@ -43,7 +43,7 @@ $pageTitle = 'Members';
             echo '<td>' . $row['Username'] . '</td>';
             echo '<td>' . $row['Email'] . '</td>';
             echo '<td>' . $row['FullName'] . '</td>';
-            echo '<td></td>';
+            echo '<td>' . $row['Date'] . '</td>';
             echo '<td>
             <a href="members.php?do=Edit&userid=' . $row['UserID'] . '" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
             <a href="members.php?do=Delete&userid=' . $row['UserID'] . '" class="btn btn-danger confirm"><i class="fa fa-close"></i> Delete</a>
@@ -152,7 +152,7 @@ $pageTitle = 'Members';
                       echo 'Sorry this user exists';
                   } else {
                       // Insert userinfo in database
-                      $stmt = $con->prepare('INSERT INTO  users(Username, Password, Email, FullName) VALUES(:zuser, :zpass, :zmail, :zname)');
+                      $stmt = $con->prepare("INSERT INTO  users(Username, Password, Email, FullName, Date) VALUES(:zuser, :zpass, :zmail, :zname, now())");
                       $stmt->execute(array(
                     'zuser' => $user,
                     'zpass' => $hashPass,
