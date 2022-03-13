@@ -195,7 +195,7 @@ $pageTitle = 'Members';
 
           // If there's such ID Show the form
 
-          if ($stmt->rowCount() > 0) { ?>
+          if ($count > 0) { ?>
 
 <h1 class="text-center">Edit Member</h1>
 <div class="cotainer">
@@ -319,23 +319,11 @@ $pageTitle = 'Members';
 
           // Select all data depend on this id
           
-          $stmt = $con->prepare('SELECT * FROM users WHERE UserID = ? LIMIT 1');
-          
-          // Execute query
-          
-          $stmt->execute(array($userid));
-          
-          // Fetch the data
-          
-          $row = $stmt->fetch();
-          
-          // The row count
-          
-          $count = $stmt->rowCount();
-          
+          $check = checkItem('userid', 'users', $userid);
+
           // If there's such ID Show the form
           
-          if ($stmt->rowCount() > 0) {
+          if ($check > 0) {
               $stmt = $con->prepare('DELETE FROM users WHERE UserID = :zuser');
               $stmt->bindParam(':zuser', $userid);
               $stmt->execute();
