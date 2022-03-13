@@ -14,7 +14,7 @@ session_start();
         </div>
       </div>
       <div class="col-md-3">
-        <div class="stat st-pending">Pending Members<span><a href="members.php?do=Manage&page=Pending">100</a></span>
+        <div class="stat st-pending">Pending Members<span><a href="members.php?do=Manage&page=Pending"><?php echo checkItem('RegStatus', 'users', 0); ?></a></span>
         </div>
       </div>
       <div class="col-md-3">
