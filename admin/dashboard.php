@@ -31,10 +31,17 @@ session_start();
     <div class="row">
       <div class="col-sm-6">
         <div class="panel panel-default">
+          <?php $latestUsers = 5 ?>
           <div class="panel-heading">
-            <i class="fa fa-users"></i> Latest Registerd Users
+            <i class="fa fa-users"></i> Latest <?php echo $latestUsers ?> Registerd Users
           </div>
-          <div class="panel-body">Test</div>
+          <div class="panel-body">
+            <?php
+              $theLatest = getLatest('*', 'users', 'UserID', $latestUsers);
+      foreach ($theLatest as $user) {
+          echo $user['Username'] . '<br />';
+      } ?>
+          </div>
         </div>
       </div>
       <div class="col-sm-6">
