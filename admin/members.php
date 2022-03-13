@@ -16,8 +16,8 @@ $pageTitle = 'Members';
 
       // Start Manage Page
       if ($do == 'Manage') { // Manage Members Page
-        // Select All users except Amdin
-        $stmt = $con->prepare('SELECT * FROM users WHERE GroupID != 1');
+          // Select All users except Amdin
+          $stmt = $con->prepare('SELECT * FROM users WHERE GroupID != 1');
           // Execute the statement
           $stmt->execute();
           // Assign to variable
@@ -140,19 +140,28 @@ $pageTitle = 'Members';
                   echo $error;
               }
 
-              // Check if there's no error procceed the update operation
+              // Check if there's no error procceed the insert operation
 
               if (empty($formErrors)) {
-                  // Insert userinfo in database
-                  $stmt = $con->prepare('INSERT INTO  users(Username, Password, Email, FullName) VALUES(:zuser, :zpass, :zmail, :zname)');
-                  $stmt->execute(array(
+
+                // Check if user exist in database
+
+                  $check = checkItem('Username', 'users', $user);
+
+                  if ($check == 1) {
+                      echo 'Sorry this user exists';
+                  } else {
+                      // Insert userinfo in database
+                      $stmt = $con->prepare('INSERT INTO  users(Username, Password, Email, FullName) VALUES(:zuser, :zpass, :zmail, :zname)');
+                      $stmt->execute(array(
                     'zuser' => $user,
                     'zpass' => $hashPass,
                     'zmail' => $email,
                     'zname' => $name
                   ));
-                  // Echo Success Message
-                  echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Inserted' . '</div>';
+                      // Echo Success Message
+                      echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Inserted' . '</div>';
+                  }
               }
           } else {
               $erroMsg = 'Sorry You can\'t browser this page directly';
