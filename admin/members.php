@@ -55,7 +55,7 @@ $pageTitle = 'Members';
             <a href="members.php?do=Edit&userid=' . $row['UserID'] . '" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
             <a href="members.php?do=Delete&userid=' . $row['UserID'] . '" class="btn btn-danger confirm"><i class="fa fa-close"></i> Delete</a>';
             if ($row['RegStatus'] == 0) {
-                echo '<a href="members.php?do=Delete&userid=' . $row['UserID'] . '" class="btn btn-info activate"><i class="fa fa-close"></i> Activate</a>';
+                echo '<a href="members.php?do=Activate&userid=' . $row['UserID'] . '" class="btn btn-info activate"><i class="fa fa-close"></i> Activate</a>';
             }
             echo '</td>';
         } ?>
@@ -317,7 +317,7 @@ $pageTitle = 'Members';
               echo 'Sorry You can\'t browser this page directly';
           }
           echo '</div>';
-      } elseif ($do = 'Delete') {
+      } elseif ($do == 'Delete') {
           // Delete Member Page
 
           echo '<h1 class="text-center">Delete Member</h1>';
@@ -338,6 +338,28 @@ $pageTitle = 'Members';
               $stmt->bindParam(':zuser', $userid);
               $stmt->execute();
               echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Deleted' . '</div>';
+          } else {
+              echo 'This ID is Not Exist';
+          }
+          echo '</div>';
+      } elseif ($do == 'Activate') {
+          echo '<h1 class="text-center">Activate Member</h1>';
+          echo '<div class="container">';
+
+          // Check if get reqest userid is numeric & get the interger value of of it
+
+          $userid = isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) : 0;
+
+          // Select all data depend on this id
+        
+          $check = checkItem('userid', 'users', $userid);
+
+          // If there's such ID Show the form
+        
+          if ($check > 0) {
+              $stmt = $con->prepare("UPDATE users SET RegStatus = 1 WHERE UserID = ?");
+              $stmt->execute(array($userid));
+              echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Updated' . '</div>';
           } else {
               echo 'This ID is Not Exist';
           }
