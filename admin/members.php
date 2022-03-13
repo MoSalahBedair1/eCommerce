@@ -152,7 +152,7 @@ $pageTitle = 'Members';
                       echo 'Sorry this user exists';
                   } else {
                       // Insert userinfo in database
-                      $stmt = $con->prepare("INSERT INTO  users(Username, Password, Email, FullName, Date) VALUES(:zuser, :zpass, :zmail, :zname, now())");
+                      $stmt = $con->prepare("INSERT INTO  users(Username, Password, Email, FullName, RegStatus, Date) VALUES(:zuser, :zpass, :zmail, :zname, 1, now())");
                       $stmt->execute(array(
                     'zuser' => $user,
                     'zpass' => $hashPass,
