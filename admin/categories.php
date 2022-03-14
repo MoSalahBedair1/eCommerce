@@ -16,6 +16,9 @@
       $do = isset($_GET['do']) ? $_GET['do'] : 'Manage';
 
       if ($do == 'Manage') { ?>
+welcome
+<?php
+} elseif ($do == 'Add') { ?>
 <h1 class="text-center">Add New Category</h1>
 <div class="container">
   <form class="form-horizontal" action="?do=Insert" method="POST">
@@ -98,10 +101,50 @@
     <!-- End submit field -->
   </form>
 </div>
-
 <?php
-} elseif ($do == 'Add') {
       } elseif ($do == 'Insert') {
+          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+              echo '<h1 class="text-center">Insert Category</h1>';
+              echo '<div class="container">';
+        
+              // Get variables from the form
+        
+              $name    = $_POST['name'];
+              $desc    = $_POST['description'];
+              $order   = $_POST['ordering'];
+              $visible = $_POST['visibility'];
+              $comment = $_POST['commenting'];
+              $ads     = $_POST['ads'];
+
+              // Check if category exist in database
+
+              $check = checkItem('Name', 'categories', $name);
+
+              if ($check == 1) {
+                  $theMsg = '<div class="alert alert-danger">Sorry this category exist</div>';
+                  redirect($theMsg, 'back');
+              } else {
+                  // Insert category in database
+                  $stmt = $con->prepare("INSERT INTO  categories(Name, Description, Ordering, Visibility, Allow_Comments, Allow_Ads) VALUES(:zname, :zdesc, :zorder, :zvisible, :zcomment, :zads)");
+                  $stmt->execute(array(
+                'zname'     => $name,
+                'zdesc'     => $desc,
+                'zorder'    => $order,
+                'zvisible'  => $visible,
+                'zcomment'  => $comment,
+                'zads'      => $ads
+              ));
+                  // Echo Success Message
+                  echo '<div class="container">';
+                  $theMsg = '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Inserted' . '</div>';
+                  redirect($theMsg, 'back');
+                  echo '</div>';
+              }
+          } else {
+              $erroMsg = 'Sorry You can\'t browser this page directly';
+              redirectHome($erroMsg, 6);
+          }
+          echo '</div>';
       } elseif ($do == 'Edit') {
       } elseif ($do == 'Update') {
       } elseif ($do == 'Delete') {
