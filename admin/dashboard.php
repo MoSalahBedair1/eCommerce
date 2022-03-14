@@ -4,7 +4,10 @@ session_start();
       $pageTitle = 'Dashboard';
       include 'init.php';
 
-      /* Start Dashboard Page */ ?>
+      /* Start Dashboard Page */
+      $latestUsers = 5;
+      $theLatest = getLatest('*', 'users', 'UserID', $latestUsers); ?>
+
 <div class="home-stats">
   <div class="container text-center">
     <h1>Dashboard</h1>
@@ -31,16 +34,20 @@ session_start();
     <div class="row">
       <div class="col-sm-6">
         <div class="panel panel-default">
-          <?php $latestUsers = 5 ?>
           <div class="panel-heading">
             <i class="fa fa-users"></i> Latest <?php echo $latestUsers ?> Registerd Users
           </div>
           <div class="panel-body">
-            <?php
-              $theLatest = getLatest('*', 'users', 'UserID', $latestUsers);
+            <ul class="list-unstyled latest-users">
+              <?php
       foreach ($theLatest as $user) {
-          echo $user['Username'] . '<br />';
+          echo '<li>' . $user['Username'] . '<a href="members.php?do=Edit&userid=' . $user['UserID'] . '"><span class="btn btn-success pull-right"><i class="fa fa-edit"></i> Edit';
+          if ($user['RegStatus'] == 0) {
+              echo '<a href="members.php?do=Activate&userid=' . $user['UserID'] . '" class="btn btn-info activate pull-right"><i class="fa fa-close"></i> Activate</a>';
+          }
+          echo '</span></a></li>';
       } ?>
+            </ul>
           </div>
         </div>
       </div>
