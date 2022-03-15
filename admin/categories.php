@@ -15,10 +15,24 @@
 
       $do = isset($_GET['do']) ? $_GET['do'] : 'Manage';
 
-      if ($do == 'Manage') { ?>
-welcome
+      if ($do == 'Manage') {
+          $stmt2 = $con->prepare("SELECT * FROM categories");
+          $stmt2->execute();
+
+          $cats = $stmt2->fetchAll(); ?>
+
+<h1 class='text-center'>Manage Categories</h1>
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">Manage Categories</div>
+    <div class="panel-body">
+      Test
+    </div>
+  </div>
+</div>
+
 <?php
-} elseif ($do == 'Add') { ?>
+      } elseif ($do == 'Add') { ?>
 <h1 class="text-center">Add New Category</h1>
 <div class="container">
   <form class="form-horizontal" action="?do=Insert" method="POST">
