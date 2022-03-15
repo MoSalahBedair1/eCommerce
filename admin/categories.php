@@ -22,11 +22,32 @@
           $cats = $stmt2->fetchAll(); ?>
 
 <h1 class='text-center'>Manage Categories</h1>
-<div class="container">
+<div class="container categories">
   <div class="panel panel-default">
     <div class="panel-heading">Manage Categories</div>
     <div class="panel-body">
-      Test
+      <?php
+        foreach ($cats as $cat) {
+            echo "<div class='cat'>";
+            echo '<h3>' . $cat['Name'] . '</h3>';
+            echo '<p>';
+            if ($cat['Description'] == '') {
+                echo 'This category has no description';
+            } else {
+                echo $cat['Description'];
+            }
+            echo '</p>';
+            if ($cat['Visibility'] == 1) {
+                echo '<span class="visibility">Hidden</span>';
+            };
+            if ($cat['Allow_Comments'] == 1) {
+                echo '<span class="commenting">Comments Disabled</span>';
+            }
+            if ($cat['Allow_Ads'] == 1) {
+                echo '<span class="advertises">Ads Disbaled</span>';
+            }
+            echo '</div>';
+        } ?>
     </div>
   </div>
 </div>

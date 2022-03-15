@@ -184,3 +184,29 @@ h1 {
 }
 
 /* End members page */
+
+/* Start Categories page */
+
+.categories .cat:last-of-type ~ hr {
+  display: none;
+}
+
+.categories .cat .visibility,
+.categories .cat .commenting,
+.categories .cat .advertises {
+  background-color: #d35400;
+  color: #fff;
+  padding: 4px 6px;
+  margin-right: 6px;
+  border-radius: 6px;
+}
+
+.categories .cat .commenting {
+  background-color: #2c3e50;
+}
+
+.categories .cat .advertises {
+  background-color: #c0392b;
+}
+
+/* End Categories page */
