@@ -16,7 +16,13 @@
       $do = isset($_GET['do']) ? $_GET['do'] : 'Manage';
 
       if ($do == 'Manage') {
-          $stmt2 = $con->prepare("SELECT * FROM categories");
+          $sort = 'ASC';
+          $sort_array = array('ASC', 'DESC');
+
+          if (isset($_GET['sort']) && in_array($_GET['sort'], $sort_array)) {
+              $sort = $_GET['sort'];
+          }
+          $stmt2 = $con->prepare("SELECT * FROM categories ORDER BY Ordering $sort");
           $stmt2->execute();
 
           $cats = $stmt2->fetchAll(); ?>
@@ -24,7 +30,18 @@
 <h1 class='text-center'>Manage Categories</h1>
 <div class="container categories">
   <div class="panel panel-default">
-    <div class="panel-heading">Manage Categories</div>
+    <div class="panel-heading">
+      Manage Categories
+      <div class="ordering pull-right">
+        Ordering:
+        <a class="<?php if ($sort == 'ASC') {
+              echo 'active';
+          } ?>" href="?sort=ASC">Asc</a> |
+        <a class="<?php if ($sort == 'DESC') {
+              echo 'active';
+          } ?>" href="?sort=DESC"> Desc</a>
+      </div>
+    </div>
     <div class="panel-body">
       <?php
         foreach ($cats as $cat) {
