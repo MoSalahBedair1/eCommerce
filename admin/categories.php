@@ -326,8 +326,6 @@
   </form>
 </div>
 
-</div>
-
 <?php
     } else { // If there's no such ID show error message
         echo "<div class='container'>";
@@ -336,6 +334,29 @@
         echo "</div>";
     }
       } elseif ($do == 'Update') {
+          echo '<h1 class="text-center">Update Category</h1>';
+          echo '<div class="container">';
+
+          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+              // Get variables from the form
+
+              $id      = $_POST['catid'];
+              $name    = $_POST['name'];
+              $desc    = $_POST['description'];
+              $order   = $_POST['ordering'];
+
+              $visible = $_POST['visibility'];
+              $comment = $_POST['commenting'];
+              $ads     = $_POST['ads'];
+
+              $stmt = $con->prepare('UPDATE categories SET Name = ?, Description = ?, Ordering = ?, Visibility = ?, Allow_Comments = ?, Allow_Ads = ? WHERE ID = ?');
+              $stmt->execute(array($name, $desc, $order, $visible, $comment, $ads, $id));
+              // Echo Success Message
+              echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Updated' . '</div>';
+          } else {
+              echo 'Sorry You can\'t browser this page directly';
+          }
+          echo '</div>';
       } elseif ($do == 'Delete') {
       }
 
