@@ -31,18 +31,18 @@
 <div class="container categories">
   <div class="panel panel-default">
     <div class="panel-heading">
-      Manage Categories
+      <i class="fa fa-edit"></i> Manage Categories
       <div class="option pull-right">
-        Ordering:
+        <i class="fa fa-sort"></i> Ordering: [
         <a class="<?php if ($sort == 'ASC') {
               echo 'active';
           } ?>" href="?sort=ASC">Asc</a> |
         <a class="<?php if ($sort == 'DESC') {
               echo 'active';
-          } ?>" href="?sort=DESC"> Desc</a>
-        View:
+          } ?>" href="?sort=DESC"> Desc</a> ]
+        <i class="fa fa-eye"></i> View: [
         <span class="active" data-view="full">Full</span> |
-        <span data-view="classic">Classic</span>
+        <span data-view="classic">Classic</span> ]
       </div>
     </div>
     <div class="panel-body">
@@ -63,13 +63,13 @@
             }
             echo '</p>';
             if ($cat['Visibility'] == 1) {
-                echo '<span class="visibility">Hidden</span>';
+                echo '<span class="visibility"><i class="fa fa-eye"></i> Hidden</span>';
             };
             if ($cat['Allow_Comments'] == 1) {
-                echo '<span class="commenting">Comments Disabled</span>';
+                echo '<span class="commenting"><i class="fa fa-close"></i> Comments Disabled</span>';
             }
             if ($cat['Allow_Ads'] == 1) {
-                echo '<span class="advertises">Ads Disbaled</span>';
+                echo '<span class="advertises"><i class="fa fa-close"></i> Ads Disbaled</span>';
             }
             echo '</div>';
             echo '</div>';
