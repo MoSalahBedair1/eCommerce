@@ -47,8 +47,8 @@
         foreach ($cats as $cat) {
             echo "<div class='cat'>";
             echo '<div class="hidden-buttons">';
-            echo "<a href='categories.php?do=Edit&catid=" . $cat['ID'] . "' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i>Edit</a>";
-            echo "<a href='#' class='btn btn-xs btn-danger'><i class='fa fa-close'></i>Delete</a>";
+            echo "<a href='categories.php?do=Edit&catid=" . $cat['ID'] . "' class='btn btn-xs btn-primary'><i class='fa fa-edit'></i> Edit</a>";
+            echo "<a href='categories.php?do=Delete&catid=" . $cat['ID'] . "' class='confirm btn btn-xs btn-danger'><i class='fa fa-close'></i> Delete</a>";
             echo '</div>';
             echo '<h3>' . $cat['Name'] . '</h3>';
             echo '<p>';
@@ -72,6 +72,7 @@
         } ?>
     </div>
   </div>
+  <a class='add-category btn btn-primary' href="categories.php?do=Add"><i class='fa fa-plus'></i> New Category</a>
 </div>
 
 <?php
@@ -358,6 +359,50 @@
           }
           echo '</div>';
       } elseif ($do == 'Delete') {
+          echo '<h1 class="text-center">Delete Category</h1>';
+          echo '<div class="container">';
+
+          // Check if get reqest catid is numeric & get the interger value of of it
+
+          $catid = isset($_GET['catid']) && is_numeric($_GET['catid']) ? intval($_GET['catid']) : 0;
+
+          // Select all data depend on this id
+        
+          $check = checkItem('ID', 'categories', $catid);
+
+          // If there's such ID Show the form
+        
+          if ($check > 0) {
+              $stmt = $con->prepare('DELETE FROM categories WHERE ID = :zid');
+              $stmt->bindParam(':zid', $catid);
+              $stmt->execute();
+              echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Deleted' . '</div>';
+          } else {
+              echo 'This ID is Not Exist';
+          }
+          echo '</div>';
+      } elseif ($do == 'Activate') {
+          echo '<h1 class="text-center">Activate Member</h1>';
+          echo '<div class="container">';
+
+          // Check if get reqest userid is numeric & get the interger value of of it
+
+          $userid = isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) : 0;
+
+          // Select all data depend on this id
+      
+          $check = checkItem('userid', 'users', $userid);
+
+          // If there's such ID Show the form
+      
+          if ($check > 0) {
+              $stmt = $con->prepare("UPDATE users SET RegStatus = 1 WHERE UserID = ?");
+              $stmt->execute(array($userid));
+              echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Updated' . '</div>';
+          } else {
+              echo 'This ID is Not Exist';
+          }
+          echo '</div>';
       }
 
       include $tpl . 'footer.php';
