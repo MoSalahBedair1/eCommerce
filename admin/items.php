@@ -67,6 +67,40 @@
       </div>
     </div>
     <!-- End Status field -->
+    <!-- End Member field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Member</label>
+      <div class="col-sm-10 col-md-4">
+        <select class="form-control" name="member">
+          <option value="0">...</option>
+          <?php
+          $stmt = $con->prepare("SELECT * FROM users");
+          $stmt->execute();
+          $users = $stmt->fetchAll();
+          foreach ($users as $user) {
+              echo "<option value='" . $user['UserID'] . "'>" . $user['Username'] . "</option>";
+          } ?>
+        </select>
+      </div>
+    </div>
+    <!-- End Member field -->
+    <!-- Start Category field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Category</label>
+      <div class="col-sm-10 col-md-4">
+        <select class="form-control" name="category">
+          <option value="0">...</option>
+          <?php
+          $stmt2 = $con->prepare("SELECT * FROM categories");
+          $stmt2->execute();
+          $cats = $stmt2->fetchAll();
+          foreach ($cats as $cat) {
+              echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
+          } ?>
+        </select>
+      </div>
+    </div>
+    <!-- End Category field -->
     <!-- Start submit field -->
     <div class="form-group form-group-lg">
       <div class="col-sm-offset-2 col-sm-10">
