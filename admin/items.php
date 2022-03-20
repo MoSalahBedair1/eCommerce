@@ -124,6 +124,8 @@
               $price    = $_POST['price'];
               $country  = $_POST['country'];
               $status   = $_POST['status'];
+              $member   = $_POST['member'];
+              $cat      = $_POST['category'];
 
               // Validate The Form
 
@@ -141,8 +143,14 @@
               if (empty($country)) {
                   $formErrors[] = '<div class="alert alert-danger">Country can\'t be <strong>empty</strong></div>';
               }
-              if ($status === 0) {
+              if ($status == 0) {
                   $formErrors[] = '<div class="alert alert-danger">You must choose the <strong>Status</strong></div>';
+              }
+              if ($member == 0) {
+                  $formErrors[] = '<div class="alert alert-danger">You must choose the <strong>Member</strong></div>';
+              }
+              if ($cat == 0) {
+                  $formErrors[] = '<div class="alert alert-danger">You must choose the <strong>Category</strong></div>';
               }
 
               // loop into error array and echo it
@@ -155,13 +163,15 @@
 
               if (empty($formErrors)) {
                   // Insert userinfo in database
-                  $stmt = $con->prepare("INSERT INTO  items(Name, Description, Price, Country_Made, Status, Add_Date) VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now())");
+                  $stmt = $con->prepare("INSERT INTO  items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID) VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now()), :zcat, zmember");
                   $stmt->execute(array(
                 'zname'    => $name,
                 'zdesc'    => $desc,
                 'zprice'   => $price,
                 'zcountry' => $country,
-                'zstatus'  => $status
+                'zstatus'  => $status,
+                'zcat'     => $cat,
+                'zmember'  => $member
               ));
                   // Echo Success Message
                   echo '<div class="container">';
