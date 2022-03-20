@@ -16,7 +16,7 @@
       $do = isset($_GET['do']) ? $_GET['do'] : 'Manage';
 
       if ($do == 'Manage') {
-          $stmt = $con->prepare("SELECT * FROM items");
+          $stmt = $con->prepare("SELECT items.*, categories.Name AS category_name, users.Username FROM items INNER JOIN categories ON categories.ID = items.Cat_ID INNER JOIN users ON users.UserID = items.Member_ID");
           // Execute the statement
           $stmt->execute();
           // Assign to variable
@@ -31,6 +31,8 @@
         <td>Description</td>
         <td>Price</td>
         <td>Adding Date</td>
+        <td>Category</td>
+        <td>Username</td>
         <td>Control</td>
       </tr>
 
@@ -43,6 +45,8 @@
             echo '<td>' . $item['Description'] . '</td>';
             echo '<td>' . $item['Price'] . '</td>';
             echo '<td>' . $item['Add_Date'] . '</td>';
+            echo '<td>' . $item['category_name'] . '</td>';
+            echo '<td>' . $item['Username'] . '</td>';
             echo '<td>
             <a href="items.php?do=Edit&itemid=' . $item['Item_ID'] . '" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
             <a href="items.php?do=Delete&itemsid=' . $item['Item_ID'] . '" class="btn btn-danger confirm"><i class="fa fa-close"></i> Delete</a>';
