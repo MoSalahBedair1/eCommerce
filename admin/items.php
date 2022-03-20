@@ -290,7 +290,6 @@
       <label class="col-sm-2 control-label">Status</label>
       <div class="col-sm-10 col-md-4">
         <select class="form-control" name="status">
-          <option value="0">...</option>
           <option value="1" <?php if ($item['Status'] == 1) {
               echo 'selected';
           } ?>>New
@@ -316,7 +315,6 @@
       <label class="col-sm-2 control-label">Member</label>
       <div class="col-sm-10 col-md-4">
         <select class="form-control" name="member">
-          <option value="0">...</option>
           <?php
           $stmt = $con->prepare("SELECT * FROM users");
           $stmt->execute();
@@ -337,7 +335,6 @@
       <label class="col-sm-2 control-label">Category</label>
       <div class="col-sm-10 col-md-4">
         <select class="form-control" name="category">
-          <option value="0">...</option>
           <?php
           $stmt2 = $con->prepare("SELECT * FROM categories");
           $stmt2->execute();
