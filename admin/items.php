@@ -16,9 +16,89 @@
       $do = isset($_GET['do']) ? $_GET['do'] : 'Manage';
 
       if ($do == 'Manage') {
-          echo 'Welcome To Items Page';
-      } elseif ($do == 'Add') {
-          ?>
+          $stmt = $con->prepare("SELECT * FROM items");
+          // Execute the statement
+          $stmt->execute();
+          // Assign to variable
+          $items = $stmt->fetchAll(); ?>
+<h1 class="text-center">Manage Members</h1>
+<div class="container">
+  <div class='table-responsive'>
+    <table class='main-table text-center table table-bordered'>
+      <tr>
+        <td>#ID</td>
+        <td>Name</td>
+        <td>Description</td>
+        <td>Price</td>
+        <td>Adding Date</td>
+        <td>Control</td>
+      </tr>
+
+      <?php
+
+        foreach ($items as $item) {
+            echo '<tr>';
+            echo '<td>' . $item['Item_ID'] . '</td>';
+            echo '<td>' . $item['Name'] . '</td>';
+            echo '<td>' . $item['Description'] . '</td>';
+            echo '<td>' . $item['Price'] . '</td>';
+            echo '<td>' . $item['Add_Date'] . '</td>';
+            echo '<td>
+            <a href="items.php?do=Edit&itemid=' . $item['Item_ID'] . '" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
+            <a href="items.php?do=Delete&itemsid=' . $item['Item_ID'] . '" class="btn btn-danger confirm"><i class="fa fa-close"></i> Delete</a>';
+            echo '</td>';
+        } ?>
+    </table>
+  </div>
+  <a href="itmes.php?do=Add" class='btn btn-primary'><i class='fa fa-plus'></i> New Items</a>
+</div>
+<?php
+      } elseif ($do == 'Add') { // Add Members Page?>
+<h1 class="text-center">Add New Member</h1>
+<div class="container">
+  <form class="form-horizontal" action="?do=Insert" method="POST">
+    <!-- Start username field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Username</label>
+      <div class="col-sm-10 col-md-4">
+        <input type="text" name="username" class="form-control" autocomplete="off" required='required'>
+      </div>
+    </div>
+    <!-- End username field -->
+    <!-- Start Password field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Password</label>
+      <div class="col-sm-10 col-md-4">
+        <input type="password" name="password" class="form-control" autocomplete="new-password" required='required'>
+      </div>
+    </div>
+    <!-- End Password field -->
+    <!-- Start Email field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Email</label>
+      <div class="col-sm-10 col-md-4">
+        <input type="email" name="email" class="form-control" required='required'>
+      </div>
+    </div>
+    <!-- End Email field -->
+    <!-- Start Full Name field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Full Name</label>
+      <div class="col-sm-10 col-md-4">
+        <input type="text" name="full" class="form-control" required='required'>
+      </div>
+    </div>
+    <!-- End Full Name field -->
+    <!-- Start submit field -->
+    <div class="form-group form-group-lg">
+      <div class="col-sm-offset-2 col-sm-10">
+        <input type="submit" value="Save" class="btn btn-primary btn-lg">
+      </div>
+    </div>
+    <!-- End submit field -->
+  </form>
+</div>
+<?php } elseif ($do == 'Add') { ?>
 <h1 class="text-center">Add New Items</h1>
 <div class="container">
   <form class="form-horizontal" action="?do=Insert" method="POST">

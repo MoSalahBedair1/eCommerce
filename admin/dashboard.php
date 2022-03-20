@@ -21,7 +21,8 @@ session_start();
         </div>
       </div>
       <div class="col-md-3">
-        <div class="stat st-items">Total Items<span>100</span></div>
+        <div class="stat st-items">Total Items<span><a href="items.php"><?php echo countItems('Item_ID', 'items'); ?></a></span>
+        </div>
       </div>
       <div class="col-md-3">
         <div class="stat st-comments">Total Comments<span>100</span></div>
