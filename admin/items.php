@@ -49,7 +49,7 @@
     <div class="form-group form-group-lg">
       <label class="col-sm-2 control-label">Country</label>
       <div class="col-sm-10 col-md-4">
-        <input type="text" name="price" class="form-control" required='required'>
+        <input type="text" name="country" class="form-control" required='required'>
       </div>
     </div>
     <!-- End Country field -->
@@ -79,6 +79,67 @@
 </div>
 <?php
       } elseif ($do == 'Insert') {
+          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+              echo '<h1 class="text-center">Update Member</h1>';
+              echo '<div class="container">';
+
+              // Get variables from the form
+
+              $name     = $_POST['name'];
+              $desc     = $_POST['description'];
+              $price    = $_POST['price'];
+              $country  = $_POST['country'];
+              $status   = $_POST['status'];
+
+              // Validate The Form
+
+              $formErrors = array();
+
+              if (empty($name)) {
+                  $formErrors[] = '<div class="alert alert-danger">name can\'t be <strong>empty</strong></div>';
+              }
+              if (empty($desc)) {
+                  $formErrors[] = '<div class="alert alert-danger">Description can\'t be <strong>empty</strong></div>';
+              }
+              if (empty($price)) {
+                  $formErrors[] = '<div class="alert alert-danger">Price can\'t be <strong>empty</strong></div>';
+              }
+              if (empty($country)) {
+                  $formErrors[] = '<div class="alert alert-danger">Country can\'t be <strong>empty</strong></div>';
+              }
+              if ($status === 0) {
+                  $formErrors[] = '<div class="alert alert-danger">You must choose the <strong>Status</strong></div>';
+              }
+
+              // loop into error array and echo it
+
+              foreach ($formErrors as $error) {
+                  echo $error;
+              }
+
+              // Check if there's no error procceed the insert operation
+
+              if (empty($formErrors)) {
+                  // Insert userinfo in database
+                  $stmt = $con->prepare("INSERT INTO  items(Name, Description, Price, Country_Made, Status, Add_Date) VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now())");
+                  $stmt->execute(array(
+                'zname'    => $name,
+                'zdesc'    => $desc,
+                'zprice'   => $price,
+                'zcountry' => $country,
+                'zstatus'  => $status
+              ));
+                  // Echo Success Message
+                  echo '<div class="container">';
+                  $theMsg = '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Inserted' . '</div>';
+                  redirect($theMsg, 'back');
+                  echo '</div>';
+              }
+          } else {
+              $erroMsg = 'Sorry You can\'t browser this page directly';
+              redirectHome($erroMsg, 6);
+          }
+          echo '</div>';
       } elseif ($do == 'Edit') {
       } elseif ($do == 'Update') {
       } elseif ($do == 'Delete') {
