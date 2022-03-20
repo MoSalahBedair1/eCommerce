@@ -54,55 +54,10 @@
         } ?>
     </table>
   </div>
-  <a href="itmes.php?do=Add" class='btn btn-primary'><i class='fa fa-plus'></i> New Items</a>
+  <a href="items.php?do=Add" class='btn btn-primary'><i class='fa fa-plus'></i> New Items</a>
 </div>
 <?php
-      } elseif ($do == 'Add') { // Add Members Page?>
-<h1 class="text-center">Add New Member</h1>
-<div class="container">
-  <form class="form-horizontal" action="?do=Insert" method="POST">
-    <!-- Start username field -->
-    <div class="form-group form-group-lg">
-      <label class="col-sm-2 control-label">Username</label>
-      <div class="col-sm-10 col-md-4">
-        <input type="text" name="username" class="form-control" autocomplete="off" required='required'>
-      </div>
-    </div>
-    <!-- End username field -->
-    <!-- Start Password field -->
-    <div class="form-group form-group-lg">
-      <label class="col-sm-2 control-label">Password</label>
-      <div class="col-sm-10 col-md-4">
-        <input type="password" name="password" class="form-control" autocomplete="new-password" required='required'>
-      </div>
-    </div>
-    <!-- End Password field -->
-    <!-- Start Email field -->
-    <div class="form-group form-group-lg">
-      <label class="col-sm-2 control-label">Email</label>
-      <div class="col-sm-10 col-md-4">
-        <input type="email" name="email" class="form-control" required='required'>
-      </div>
-    </div>
-    <!-- End Email field -->
-    <!-- Start Full Name field -->
-    <div class="form-group form-group-lg">
-      <label class="col-sm-2 control-label">Full Name</label>
-      <div class="col-sm-10 col-md-4">
-        <input type="text" name="full" class="form-control" required='required'>
-      </div>
-    </div>
-    <!-- End Full Name field -->
-    <!-- Start submit field -->
-    <div class="form-group form-group-lg">
-      <div class="col-sm-offset-2 col-sm-10">
-        <input type="submit" value="Save" class="btn btn-primary btn-lg">
-      </div>
-    </div>
-    <!-- End submit field -->
-  </form>
-</div>
-<?php } elseif ($do == 'Add') { ?>
+      } elseif ($do == 'Add') { ?>
 <h1 class="text-center">Add New Items</h1>
 <div class="container">
   <form class="form-horizontal" action="?do=Insert" method="POST">
@@ -198,7 +153,7 @@
 <?php
       } elseif ($do == 'Insert') {
           if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-              echo '<h1 class="text-center">Update Member</h1>';
+              echo '<h1 class="text-center">Add New Item</h1>';
               echo '<div class="container">';
 
               // Get variables from the form
@@ -247,7 +202,7 @@
 
               if (empty($formErrors)) {
                   // Insert userinfo in database
-                  $stmt = $con->prepare("INSERT INTO  items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID) VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now()), :zcat, zmember");
+                  $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID) VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember)");
                   $stmt->execute(array(
                 'zname'    => $name,
                 'zdesc'    => $desc,
@@ -269,6 +224,152 @@
           }
           echo '</div>';
       } elseif ($do == 'Edit') {
+          // Check if get request item is numeric & get the interger value of of it
+
+          $itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
+
+          // Select all data depend on this id
+
+          $stmt = $con->prepare('SELECT * FROM items WHERE Item_ID = ?');
+
+          // Execute query
+
+          $stmt->execute(array($itemid));
+
+          // Fetch the data
+
+          $item = $stmt->fetch();
+
+          // The row count
+
+          $count = $stmt->rowCount();
+
+          // If there's such ID Show the form
+
+          if ($count > 0) { ?>
+<h1 class="text-center">Edit Item</h1>
+<div class="container">
+  <form class="form-horizontal" action="?do=Update" method="POST">
+    <!-- Start name field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Name</label>
+      <div class="col-sm-10 col-md-4">
+        <input type="text" name="name" class="form-control" required='required'
+          value="<?php echo $item['Name'] ?>">
+      </div>
+    </div>
+    <!-- End Description field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Description</label>
+      <div class="col-sm-10 col-md-4">
+        <input type="text" name="description" class="form-control" required='required'
+          value="<?php echo $item['Description'] ?>">
+      </div>
+    </div>
+    <!-- End Description field -->
+    <!-- End Price field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Price</label>
+      <div class="col-sm-10 col-md-4">
+        <input type="text" name="price" class="form-control" required='required'
+          value="<?php echo $item['Price'] ?>">
+      </div>
+    </div>
+    <!-- End Price field -->
+    <!-- End Country field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Country</label>
+      <div class="col-sm-10 col-md-4">
+        <input type="text" name="country" class="form-control" required='required'
+          value="<?php echo $item['Country_Made'] ?>">
+      </div>
+    </div>
+    <!-- End Country field -->
+    <!-- End Status field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Status</label>
+      <div class="col-sm-10 col-md-4">
+        <select class="form-control" name="status">
+          <option value="0">...</option>
+          <option value="1" <?php if ($item['Status'] == 1) {
+              echo 'selected';
+          } ?>>New
+          </option>
+          <option value="2" <?php if ($item['Status'] == 2) {
+              echo 'selected';
+          } ?>>Like New
+          </option>
+          <option value="3" <?php if ($item['Status'] == 3) {
+              echo 'selected';
+          } ?>>Used
+          </option>
+          <option value="4" <?php if ($item['Status'] == 4) {
+              echo 'selected';
+          } ?>>Very Old
+          </option>
+        </select>
+      </div>
+    </div>
+    <!-- End Status field -->
+    <!-- End Member field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Member</label>
+      <div class="col-sm-10 col-md-4">
+        <select class="form-control" name="member">
+          <option value="0">...</option>
+          <?php
+          $stmt = $con->prepare("SELECT * FROM users");
+          $stmt->execute();
+          $users = $stmt->fetchAll();
+          foreach ($users as $user) {
+              echo "<option value='" . $user['UserID'] . "'";
+              if ($item['Member_ID'] == $user['UserID']) {
+                  echo 'selected';
+              }
+              echo ">" . $user['Username'] . "</option>";
+          } ?>
+        </select>
+      </div>
+    </div>
+    <!-- End Member field -->
+    <!-- Start Category field -->
+    <div class="form-group form-group-lg">
+      <label class="col-sm-2 control-label">Category</label>
+      <div class="col-sm-10 col-md-4">
+        <select class="form-control" name="category">
+          <option value="0">...</option>
+          <?php
+          $stmt2 = $con->prepare("SELECT * FROM categories");
+          $stmt2->execute();
+          $cats = $stmt2->fetchAll();
+          foreach ($cats as $cat) {
+              echo "<option value='" . $cat['ID'] . "'";
+              if ($item['Cat_ID'] == $cat['ID']) {
+                  echo 'selected';
+              }
+              echo ">" . $cat['Name'] . "</option>";
+          } ?>
+        </select>
+      </div>
+    </div>
+    <!-- End Category field -->
+    <!-- Start submit field -->
+    <div class="form-group form-group-lg">
+      <div class="col-sm-offset-2 col-sm-10">
+        <input type="submit" value="Add Item" class="btn btn-primary
+      btn-sm">
+      </div>
+    </div>
+    <!-- End submit field -->
+  </form>
+</div>
+
+<?php } else { // If there's no such ID show error message
+              echo "<div class='container'>";
+              $theMsg = '<div class="alert alert-danger">There\'s No Such ID</div>';
+              redirect($theMsg);
+              echo "</div>";
+          }
       } elseif ($do == 'Update') {
       } elseif ($do == 'Delete') {
       } elseif ($do == 'Approve') {
