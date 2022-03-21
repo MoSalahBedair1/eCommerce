@@ -21,7 +21,7 @@
           $stmt->execute();
           // Assign to variable
           $items = $stmt->fetchAll(); ?>
-<h1 class="text-center">Manage Members</h1>
+<h1 class="text-center">Manage Items</h1>
 <div class="container">
   <div class='table-responsive'>
     <table class='main-table text-center table table-bordered'>
@@ -50,6 +50,9 @@
             echo '<td>
             <a href="items.php?do=Edit&itemid=' . $item['Item_ID'] . '" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
             <a href="items.php?do=Delete&itemid=' . $item['Item_ID'] . '" class="btn btn-danger confirm"><i class="fa fa-close"></i> Delete</a>';
+            if ($item['Approve'] == 0) {
+                echo '<a href="items.php?do=Approve&itemid=' . $item['Item_ID'] . '" class="btn btn-info activate"><i class="fa fa-check"></i> Approve</a>';
+            }
             echo '</td>';
         } ?>
     </table>
@@ -453,6 +456,27 @@
           }
           echo '</div>';
       } elseif ($do == 'Approve') {
+          echo '<h1 class="text-center">Approve Item</h1>';
+          echo '<div class="container">';
+
+          // Check if get reqest userid is numeric & get the interger value of of it
+
+          $itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
+
+          // Select all data depend on this id
+        
+          $check = checkItem('Item_ID', 'items', $itemid);
+
+          // If there's such ID Show the form
+        
+          if ($check > 0) {
+              $stmt = $con->prepare("UPDATE items SET Approve = 1 WHERE Item_ID = ?");
+              $stmt->execute(array($itemid));
+              echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Updated' . '</div>';
+          } else {
+              echo 'This ID is Not Exist';
+          }
+          echo '</div>';
       }
 
       include $tpl . 'footer.php';
