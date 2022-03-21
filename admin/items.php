@@ -49,7 +49,7 @@
             echo '<td>' . $item['Username'] . '</td>';
             echo '<td>
             <a href="items.php?do=Edit&itemid=' . $item['Item_ID'] . '" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
-            <a href="items.php?do=Delete&itemsid=' . $item['Item_ID'] . '" class="btn btn-danger confirm"><i class="fa fa-close"></i> Delete</a>';
+            <a href="items.php?do=Delete&itemid=' . $item['Item_ID'] . '" class="btn btn-danger confirm"><i class="fa fa-close"></i> Delete</a>';
             echo '</td>';
         } ?>
     </table>
@@ -430,6 +430,28 @@
           }
           echo '</div>';
       } elseif ($do == 'Delete') {
+          echo '<h1 class="text-center">Delete Item</h1>';
+          echo '<div class="container">';
+
+          // Check if get reqest itemid is numeric & get the interger value of of it
+
+          $itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
+
+          // Select all data depend on this id
+        
+          $check = checkItem('Item_ID', 'items', $itemid);
+
+          // If there's such ID Show the form
+        
+          if ($check > 0) {
+              $stmt = $con->prepare('DELETE FROM items WHERE Item_ID = :zid');
+              $stmt->bindParam(':zid', $itemid);
+              $stmt->execute();
+              echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Deleted' . '</div>';
+          } else {
+              echo 'This ID is Not Exist';
+          }
+          echo '</div>';
       } elseif ($do == 'Approve') {
       }
 
