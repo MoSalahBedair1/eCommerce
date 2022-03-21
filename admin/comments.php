@@ -59,17 +59,17 @@ $pageTitle = 'Comments';
 <?php
       } elseif ($do == 'Edit') { // Edit Page
 
-          // Check if get reqest userid is numeric & get the interger value of of it
+          // Check if get reqest comid is numeric & get the interger value of of it
 
-          $userid = isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) : 0;
+          $comid = isset($_GET['comid']) && is_numeric($_GET['comid']) ? intval($_GET['comid']) : 0;
 
           // Select all data depend on this id
 
-          $stmt = $con->prepare('SELECT * FROM users WHERE UserID = ? LIMIT 1');
+          $stmt = $con->prepare('SELECT * FROM comments WHERE c_id = ?');
 
           // Execute query
 
-          $stmt->execute(array($userid));
+          $stmt->execute(array($comid));
 
           // Fetch the data
 
@@ -83,50 +83,19 @@ $pageTitle = 'Comments';
 
           if ($count > 0) { ?>
 
-<h1 class="text-center">Edit Member</h1>
+<h1 class="text-center">Edit Comment</h1>
 <div class="cotainer">
   <form class="form-horizontal" action="?do=Update" method="POST">
-    <input type="hidden" name="userid" value='<?php echo $userid ?>'>
-    <!-- Start username field -->
+    <input type="hidden" name="comid" value='<?php echo $comid ?>'>
+    <!-- Start Comment field -->
     <div class="form-group form-group-lg">
-      <label class="col-sm-2 control-label">Username</label>
+      <label class="col-sm-2 control-label">Comment</label>
       <div class="col-sm-10 col-md-4">
-        <input type="text" name="username"
-          value='<?php echo $row['Username'] ?>'
-          class="form-control" autocomplete="off" required='required'>
+        <textarea class='form-control'
+          name='comment'><?php echo $row['comment'] ?></textarea>
       </div>
     </div>
-    <!-- End username field -->
-    <!-- Start Password field -->
-    <div class="form-group form-group-lg">
-      <label class="col-sm-2 control-label">Password</label>
-      <div class="col-sm-10 col-md-4">
-        <input type="hidden" name="oldpassword"
-          value='<?php echo $row['Password'] ?>'>
-        <input type="password" name="newpassword" class="form-control" autocomplete="new-password">
-      </div>
-    </div>
-    <!-- End Password field -->
-    <!-- Start Email field -->
-    <div class="form-group form-group-lg">
-      <label class="col-sm-2 control-label">Email</label>
-      <div class="col-sm-10 col-md-4">
-        <input type="email" name="email"
-          value='<?php echo $row['Email'] ?>'
-          class="form-control" required='required'>
-      </div>
-    </div>
-    <!-- End Email field -->
-    <!-- Start Full Name field -->
-    <div class="form-group form-group-lg">
-      <label class="col-sm-2 control-label">Full Name</label>
-      <div class="col-sm-10 col-md-4">
-        <input type="text" name="full"
-          value='<?php echo $row['FullName'] ?>'
-          class="form-control" required='required'>
-      </div>
-    </div>
-    <!-- End Full Name field -->
+    <!-- End Comment field -->
     <!-- Start submit field -->
     <div class="form-group form-group-lg">
       <div class="col-sm-offset-2 col-sm-10">
@@ -145,97 +114,67 @@ $pageTitle = 'Comments';
           echo "</div>";
       }
       } elseif ($do == 'Update') { // Update Page
-          echo '<h1 class="text-center">Update Member</h1>';
+          echo '<h1 class="text-center">Update Comment</h1>';
           echo '<div class="container">';
 
           if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               // Get variables from the form
 
-              $id    = $_POST['userid'];
-              $user  = $_POST['username'];
-              $email = $_POST['email'];
-              $name  = $_POST['full'];
+              $comid    = $_POST['comid'];
+              $comment  = $_POST['comment'];
 
-              // Password Trick
-
-              $pass = empty($_POST['newpassword']) ? $pass = $_POST['oldpassword'] : $pass = sha1($_POST['newpassword']);
-
-              // Validate The Form
-
-              $formErrors = array();
-
-              if (empty($user)) {
-                  $formErrors[] = '<div class="alert alert-danger">Username can\'t be <strong>empty</strong></div>';
-              }
-              if (empty($name)) {
-                  $formErrors[] = '<div class="alert alert-danger">Full name can\'t be <strong>empty</strong></div>';
-              }
-              if (empty($email)) {
-                  $formErrors[] = '<div class="alert alert-danger">Email can\'t be <strong>empty</strong></div>';
-              }
-
-              // loop into error array and echo it
-
-              foreach ($formErrors as $error) {
-                  echo $error;
-              }
-
-              // Check if there's no error procceed the update operation
-
-              if (empty($formErrors)) {
-                  // Update the database with this info
-                  $stmt = $con->prepare('UPDATE users SET Username = ?, Email = ?, FullName = ?, Password = ? WHERE UserID = ?');
-                  $stmt->execute(array($user, $email, $name, $pass, $id));
-                  // Echo Success Message
-                  echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Updated' . '</div>';
-              }
+              // Update the database with this info
+              $stmt = $con->prepare('UPDATE comments SET comment = ? WHERE c_id = ?');
+              $stmt->execute(array($comment, $comid));
+              // Echo Success Message
+              echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Updated' . '</div>';
           } else {
               echo 'Sorry You can\'t browser this page directly';
           }
           echo '</div>';
       } elseif ($do == 'Delete') {
-          // Delete Member Page
+          // Delete Page
 
-          echo '<h1 class="text-center">Delete Member</h1>';
+          echo '<h1 class="text-center">Delete Comment</h1>';
           echo '<div class="container">';
 
-          // Check if get reqest userid is numeric & get the interger value of of it
+          // Check if get reqest comid is numeric & get the interger value of of it
 
-          $userid = isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) : 0;
+          $comid = isset($_GET['comid']) && is_numeric($_GET['comid']) ? intval($_GET['comid']) : 0;
 
           // Select all data depend on this id
           
-          $check = checkItem('userid', 'users', $userid);
+          $check = checkItem('c_id', 'comments', $comid);
 
           // If there's such ID Show the form
           
           if ($check > 0) {
-              $stmt = $con->prepare('DELETE FROM users WHERE UserID = :zuser');
-              $stmt->bindParam(':zuser', $userid);
+              $stmt = $con->prepare('DELETE FROM comments WHERE c_id = :zid');
+              $stmt->bindParam(':zid', $comid);
               $stmt->execute();
               echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Deleted' . '</div>';
           } else {
               echo 'This ID is Not Exist';
           }
           echo '</div>';
-      } elseif ($do == 'Activate') {
-          echo '<h1 class="text-center">Activate Member</h1>';
+      } elseif ($do == 'Approve') {
+          echo '<h1 class="text-center">Approve Comment</h1>';
           echo '<div class="container">';
 
-          // Check if get reqest userid is numeric & get the interger value of of it
+          // Check if get reqest comid is numeric & get the interger value of of it
 
-          $userid = isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) : 0;
+          $comid = isset($_GET['comid']) && is_numeric($_GET['comid']) ? intval($_GET['comid']) : 0;
 
           // Select all data depend on this id
         
-          $check = checkItem('userid', 'users', $userid);
+          $check = checkItem('c_id', 'comments', $comid);
 
           // If there's such ID Show the form
         
           if ($check > 0) {
-              $stmt = $con->prepare("UPDATE users SET RegStatus = 1 WHERE UserID = ?");
-              $stmt->execute(array($userid));
-              echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Updated' . '</div>';
+              $stmt = $con->prepare("UPDATE comments SET status = 1 WHERE c_id = ?");
+              $stmt->execute(array($comid));
+              echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Approved' . '</div>';
           } else {
               echo 'This ID is Not Exist';
           }
