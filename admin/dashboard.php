@@ -15,19 +15,32 @@ session_start();
     <h1>Dashboard</h1>
     <div class="row">
       <div class="col-md-3">
-        <div class="stat st-members">Total Members<span><a href="members.php"><?php echo countItems('UserID', 'users'); ?></a></span>
+        <div class="stat st-members">
+          <i class="fa fa-users"></i>
+          <div class="info">
+            Total Members<span><a href="members.php"><?php echo countItems('UserID', 'users'); ?></a></span>
+          </div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="stat st-pending">Pending Members<span><a href="members.php?do=Manage&page=Pending"><?php echo checkItem('RegStatus', 'users', 0); ?></a></span>
+        <div class="stat st-pending">
+          <i class="fa fa-user-plus"></i>
+          <div class="info">
+            Pending Members<span><a href="members.php?do=Manage&page=Pending"><?php echo checkItem('RegStatus', 'users', 0); ?></a></span>
+          </div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="stat st-items">Total Items<span><a href="items.php"><?php echo countItems('Item_ID', 'items'); ?></a></span>
+        <div class="stat st-items"><i class="fa fa-tag"></i>
+          <div class="info">
+            Total Items<span><a href="items.php"><?php echo countItems('Item_ID', 'items'); ?></a></span>
+          </div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="stat st-comments">Total Comments<span>100</span></div>
+        <div class="stat st-comments"><i class="fa fa-comments"></i>
+          <div class="info">Total Comments<span>100</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -39,6 +52,9 @@ session_start();
         <div class="panel panel-default">
           <div class="panel-heading">
             <i class="fa fa-users"></i> Latest <?php echo $latestUsersNum ?> Registerd Users
+            <span class="toggle-info pull-right">
+              <i class="fa fa-plus fa-lg"></i>
+            </span>
           </div>
           <div class="panel-body">
             <ul class="list-unstyled latest-users">
@@ -58,6 +74,9 @@ session_start();
         <div class="panel panel-default">
           <div class="panel-heading">
             <i class="fa fa-users"></i> Latest <?php echo $latestItemsNum ?> Items
+            <span class="toggle-info pull-right">
+              <i class="fa fa-plus fa-lg"></i>
+            </span>
           </div>
           <div class="panel-body">
             <ul class="list-unstyled latest-users">
