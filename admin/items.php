@@ -250,6 +250,7 @@
 <h1 class="text-center">Edit Item</h1>
 <div class="container">
   <form class="form-horizontal" action="?do=Update" method="POST">
+    <input type="hidden" name="itemid" value='<?php echo $itemid ?>'>
     <!-- Start name field -->
     <div class="form-group form-group-lg">
       <label class="col-sm-2 control-label">Name</label>
@@ -368,6 +369,66 @@
               echo "</div>";
           }
       } elseif ($do == 'Update') {
+          echo '<h1 class="text-center">Update Item</h1>';
+          echo '<div class="container">';
+
+          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+              // Get variables from the form
+
+              $id      = $_POST['itemid'];
+              $name    = $_POST['name'];
+              $desc    = $_POST['description'];
+              $price   = $_POST['price'];
+              $country = $_POST['country'];
+              $status  = $_POST['status'];
+              $cat     = $_POST['category'];
+              $member  = $_POST['member'];
+
+              // Validate The Form
+
+              $formErrors = array();
+
+              if (empty($name)) {
+                  $formErrors[] = '<div class="alert alert-danger">name can\'t be <strong>empty</strong></div>';
+              }
+              if (empty($desc)) {
+                  $formErrors[] = '<div class="alert alert-danger">Description can\'t be <strong>empty</strong></div>';
+              }
+              if (empty($price)) {
+                  $formErrors[] = '<div class="alert alert-danger">Price can\'t be <strong>empty</strong></div>';
+              }
+              if (empty($country)) {
+                  $formErrors[] = '<div class="alert alert-danger">Country can\'t be <strong>empty</strong></div>';
+              }
+              if ($status == 0) {
+                  $formErrors[] = '<div class="alert alert-danger">You must choose the <strong>Status</strong></div>';
+              }
+              if ($member == 0) {
+                  $formErrors[] = '<div class="alert alert-danger">You must choose the <strong>Member</strong></div>';
+              }
+              if ($cat == 0) {
+                  $formErrors[] = '<div class="alert alert-danger">You must choose the <strong>Category</strong></div>';
+              }
+
+              // loop into error array and echo it
+
+              foreach ($formErrors as $error) {
+                  echo $error;
+              }
+
+              // Check if there's no error procceed the update operation
+
+              if (empty($formErrors)) {
+                  // Update the database with this info
+                  $stmt = $con->prepare('UPDATE items SET Name = ?, Description = ?, Price = ?, Country_Made = ?, Status = ?, Cat_ID = ?, Member_ID = ? WHERE Item_ID = ?');
+                  $stmt->execute(array($name, $desc, $price, $country, $status, $cat, $member ,$id));
+                  // Echo Success Message
+                  echo  '<div class="alert alert-success">' . $stmt->rowCount() . ' Record Updated' . '</div>';
+              }
+          } else {
+              echo 'Sorry You can\'t browser this page directly';
+          }
+          echo '</div>';
       } elseif ($do == 'Delete') {
       } elseif ($do == 'Approve') {
       }
