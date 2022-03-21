@@ -5,8 +5,10 @@ session_start();
       include 'init.php';
 
       /* Start Dashboard Page */
-      $latestUsers = 5;
-      $theLatest = getLatest('*', 'users', 'UserID', $latestUsers); ?>
+      $latestUsersNum = 5;
+      $latestUsers = getLatest('*', 'users', 'UserID', $latestUsersNum);
+      $latestItemsNum = 6;
+      $latestItems = getLatest('*', 'items', 'Item_ID', $latestItemsNum) ?>
 
 <div class="home-stats">
   <div class="container text-center">
@@ -36,15 +38,15 @@ session_start();
       <div class="col-sm-6">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <i class="fa fa-users"></i> Latest <?php echo $latestUsers ?> Registerd Users
+            <i class="fa fa-users"></i> Latest <?php echo $latestUsersNum ?> Registerd Users
           </div>
           <div class="panel-body">
             <ul class="list-unstyled latest-users">
               <?php
-      foreach ($theLatest as $user) {
+      foreach ($latestUsers as $user) {
           echo '<li>' . $user['Username'] . '<a href="members.php?do=Edit&userid=' . $user['UserID'] . '"><span class="btn btn-success pull-right"><i class="fa fa-edit"></i> Edit';
           if ($user['RegStatus'] == 0) {
-              echo '<a href="members.php?do=Activate&userid=' . $user['UserID'] . '" class="btn btn-info activate pull-right"><i class="fa fa-close"></i> Activate</a>';
+              echo '<a href="members.php?do=Activate&userid=' . $user['UserID'] . '" class="btn btn-info activate pull-right"><i class="fa fa-check"></i> Activate</a>';
           }
           echo '</span></a></li>';
       } ?>
@@ -55,9 +57,20 @@ session_start();
       <div class="col-sm-6">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <i class="fa fa-tag"></i> Latest Items
+            <i class="fa fa-users"></i> Latest <?php echo $latestItemsNum ?> Items
           </div>
-          <div class="panel-body">Test</div>
+          <div class="panel-body">
+            <ul class="list-unstyled latest-users">
+              <?php
+      foreach ($latestItems as $item) {
+          echo '<li>' . $item['Name'] . '<a href="members.php?do=Edit&itemid=' . $item['Item_ID'] . '"><span class="btn btn-success pull-right"><i class="fa fa-edit"></i> Edit';
+          if ($item['Approve'] == 0) {
+              echo '<a href="members.php?do=Activate&itemid=' . $item['Item_ID'] . '" class="btn btn-info activate pull-right"><i class="fa fa-check"></i> Activate</a>';
+          }
+          echo '</span></a></li>';
+      } ?>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

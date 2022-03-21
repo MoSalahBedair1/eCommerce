@@ -8,7 +8,8 @@
         'CATEGORIES'  => 'Categories',
         'ITEMS'       => 'Items',
         'MEMBERS'     => 'Members',
-        'STATISTICS'   => 'Statstics',
+        'COMMENTS'    => 'Comments',
+        'STATISTICS'  => 'Statstics',
         'LOGS'        => 'Logs'
     );
       return $lang[$phrase];
