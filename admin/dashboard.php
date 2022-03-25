@@ -39,7 +39,8 @@ session_start();
       </div>
       <div class="col-md-3">
         <div class="stat st-comments"><i class="fa fa-comments"></i>
-          <div class="info">Total Comments<span>100</span></div>
+          <div class="info">Total Comments<span><a href="comments.php"><?php echo countItems('c_id', 'comments'); ?></a></span>
+          </div>
         </div>
       </div>
     </div>
@@ -59,13 +60,17 @@ session_start();
           <div class="panel-body">
             <ul class="list-unstyled latest-users">
               <?php
-      foreach ($latestUsers as $user) {
-          echo '<li>' . $user['Username'] . '<a href="members.php?do=Edit&userid=' . $user['UserID'] . '"><span class="btn btn-success pull-right"><i class="fa fa-edit"></i> Edit';
-          if ($user['RegStatus'] == 0) {
-              echo '<a href="members.php?do=Activate&userid=' . $user['UserID'] . '" class="btn btn-info activate pull-right"><i class="fa fa-check"></i> Activate</a>';
-          }
-          echo '</span></a></li>';
-      } ?>
+              if (!empty($latestItems)) {
+                  foreach ($latestUsers as $user) {
+                      echo '<li>' . $user['Username'] . '<a href="members.php?do=Edit&userid=' . $user['UserID'] . '"><span class="btn btn-success pull-right"><i class="fa fa-edit"></i> Edit';
+                      if ($user['RegStatus'] == 0) {
+                          echo '<a href="members.php?do=Activate&userid=' . $user['UserID'] . '" class="btn btn-info activate pull-right"><i class="fa fa-check"></i> Activate</a>';
+                      }
+                      echo '</span></a></li>';
+                  }
+              } else {
+                  echo 'There\'s no record to show';
+              } ?>
             </ul>
           </div>
         </div>
