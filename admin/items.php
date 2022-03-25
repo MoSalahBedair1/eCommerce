@@ -362,15 +362,52 @@
       </div>
     </div>
     <!-- End submit field -->
-  </form>
+  </form> <?php
+  // Select All users except Amdin
+          $stmt = $con->prepare("SELECT comments.*, users.Username AS Member FROM comments INNER JOIN users ON users.UserID = comments.user_id WHERE item_id = ?");
+          // Execute the statement
+          $stmt->execute(array($itemid));
+          // Assign to variable
+          $rows = $stmt->fetchAll();
+          if (!empty($rows)) { ?>
+  <h1 class="text-center">Manage [ <?php echo $item['Name']; ?> ] Comments</h1>
+  <div class='table-responsive'>
+    <table class='main-table text-center table table-bordered'>
+      <tr>
+        <td>Comment</td>
+        <td>User Name</td>
+        <td>Added Date</td>
+        <td>Control</td>
+      </tr>
+
+      <?php
+
+        foreach ($rows as $row) {
+            echo '<tr>';
+            echo '<td>' . $row['c_id'] . '</td>';
+            echo '<td>' . $row['comment'] . '</td>';
+            echo '<td>' . $row['Item_Name'] . '</td>';
+            echo '<td>' . $row['Member'] . '</td>';
+            echo '<td>' . $row['comment_date'] . '</td>';
+            echo '<td>
+            <a href="comments.php?do=Edit&comid=' . $row['c_id'] . '" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
+            <a href="comments.php?do=Delete&comid=' . $row['c_id'] . '" class="btn btn-danger confirm"><i class="fa fa-close"></i> Delete</a>';
+            if ($row['status'] == 0) {
+                echo '<a href="comments.php?do=Approve&comid=' . $row['c_id'] . '" class="btn btn-info activate"><i class="fa fa-check"></i> Approve</a>';
+            }
+            echo '</td>';
+        } ?>
+    </table>
+  </div>
+  <?php } ?>
 </div>
 
 <?php } else { // If there's no such ID show error message
-              echo "<div class='container'>";
-              $theMsg = '<div class="alert alert-danger">There\'s No Such ID</div>';
-              redirect($theMsg);
-              echo "</div>";
-          }
+            echo "<div class='container'>";
+            $theMsg = '<div class="alert alert-danger">There\'s No Such ID</div>';
+            redirect($theMsg);
+            echo "</div>";
+        }
       } elseif ($do == 'Update') {
           echo '<h1 class="text-center">Update Item</h1>';
           echo '<div class="container">';
