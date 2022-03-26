@@ -1,7 +1,7 @@
 <?php
 
 /*
-** Get records function v1.0
+** Get categories function v1.0
 ** Function to get categories from database
 */
 
@@ -12,6 +12,20 @@ function getCat()
     $getCat->execute();
     $cats = $getCat->fetchAll();
     return $cats;
+}
+
+/*
+** Get items function v1.0
+** Function to get items from database
+*/
+
+function getItems($catID)
+{
+    global $con;
+    $getItems = $con->prepare("SELECT * FROM items WHERE Cat_ID = ? ORDER BY Item_ID DESC");
+    $getItems->execute(array($catID));
+    $items = $getItems->fetchAll();
+    return $items;
 }
 
 

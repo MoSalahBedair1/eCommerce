@@ -1,9 +1,15 @@
 <?php
 
-  include 'init.php';
+  include 'init.php'; ?>
 
-  echo 'Welcome to categories page<br>';
+<div class="container">
+  <h1 class="text-center"><?php echo str_replace('-', ' ', $_GET['pagename']) ?>
+  </h1>
+  <?php
+  foreach ($getItems($_GET['pageid']) as $item) {
+      echo $item['Name'];
+  }
+  ?>
+</div>
 
-  echo 'Your Page ID Is ' . $_GET['pageid'];
-
-  include $tpl . 'footer.php';
+<?php include $tpl . 'footer.php';
