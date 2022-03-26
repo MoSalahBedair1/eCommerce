@@ -1,6 +1,21 @@
 <?php
 
 /*
+** Get records function v1.0
+** Function to get categories from database
+*/
+
+function getCat()
+{
+    global $con;
+    $getCat = $con->prepare("SELECT * FROM categories ORDER BY ID ASC");
+    $getCat->execute();
+    $cats = $getCat->fetchAll();
+    return $cats;
+}
+
+
+/*
  ** Title function v1.0
  ** Title function that echo the page title in case the page
  **  has the variable $pageTitle and echo default title for other pages
