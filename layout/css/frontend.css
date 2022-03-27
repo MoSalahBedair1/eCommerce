@@ -83,6 +83,14 @@ h1 {
   margin-bottom: 10px;
 }
 
+.login-page [data-class="login"].selected {
+  color: #337ab7;
+}
+
+.login-page [data-class="signup"].selected {
+  color: #5cb85c;
+}
+
 .login-page .selected {
   color: #b22020;
 }
