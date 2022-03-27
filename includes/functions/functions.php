@@ -28,6 +28,23 @@ function getItems($catID)
     return $items;
 }
 
+/*
+** Check if user is not activated
+** Function to chec the RegStatus of the user
+*/
+
+function checkUserStatus($user)
+{
+    // Check if the user exists in database
+
+    global $con;
+
+    $stmtx = $con->prepare('SELECT Username, RegStatus FROM users WHERE Username = ? AND RegStatus = 0');
+    $stmtx->execute(array($user));
+    $status = $stmtx->rowCount();
+    return $status;
+}
+
 
 /*
  ** Title function v1.0
