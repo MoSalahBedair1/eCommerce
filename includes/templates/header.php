@@ -18,13 +18,13 @@
     <div class="container">
       <?php
         if (isset($_SESSION['user'])) {
-            echo 'Welcome ' . $_SESSION['user'];
+            echo 'Welcome ' . $sessionUser;
 
             echo '<a href="profile.php">My Profile</a>';
 
             echo '<a href="logout.php">Log Out</a>';
 
-            $userStatus = checkUserStatus($_SESSION['user']);
+            $userStatus = checkUserStatus($sessionUser);
             if ($userStatus == 1) {
                 //
             }
