@@ -10,12 +10,14 @@
   <link rel="stylesheet" href="<?php echo $css ?>bootstrap.min.css">
   <link rel="stylesheet"
     href="<?php echo $css ?>font-awesome.min.css">
-  <link rel="stylesheet" href="<?php echo $css ?>frontend.css.css">
+  <link rel="stylesheet" href="<?php echo $css ?>frontend.css">
 </head>
 
 <body>
   <div class="upper-bar">
-    upper bar
+    <div class="container">
+      <span class="pull-right">Login/Signup</span>
+    </div>
   </div>
   <nav class="navbar navbar-inverse">
     <div class="container">

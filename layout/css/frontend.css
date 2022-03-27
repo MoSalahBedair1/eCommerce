@@ -1,7 +1,7 @@
 /* Start main rules */
 
 body {
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
   font-size: 16px;
 }
 
@@ -67,14 +67,43 @@ h1 {
 /* Start Header */
 
 .upper-bar {
-  
+  padding: 10px;
+  background-color: #fff;
 }
 
 /* End Header */
 
+/* Start login page */
+.login-page form {
+  max-width: 300px;
+  margin: auto;
+}
+
+.login-page form input {
+  margin-bottom: 10px;
+}
+
+.login-page .selected {
+  color: #b22020;
+}
+
+.login-page h1 {
+  color: #c0c0c0;
+}
+
+.login-page h1 span {
+  cursor: pointer;
+}
+
+.login-page .signup {
+  display: none;
+}
+
+/* End login page */
+
 /* Start categories page */
 
-.item-box{
+.item-box {
   position: relative;
 }
 
