@@ -11,27 +11,30 @@
   // Check if user coming from HTTP post request
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $user = $_POST['username'];
-      $pass = $_POST['password'];
-      $hashedPass = sha1($pass);
-
-      // Check if the user exists in database
-
-      $stmt = $con->prepare('SELECT Username, Password FROM users WHERE Username = ? AND Password = ?');
-      $stmt->execute(array($user, $hashedPass));
-      $count = $stmt->rowCount();
-      echo $count;
-
-
-      // If count > 0 this means that database cotains record about this username
-
-      if ($count > 0) {
-          $_SESSION['user'] = $user; // Register session name
-          print_r($_SESSION);
-          header('Location: profile.php'); // Redirect to dashboard page
-          exit();
+      if (isset($_POST[''])) {
+          $user = $_POST['username'];
+          $pass = $_POST['password'];
+          $hashedPass = sha1($pass);
+  
+          // Check if the user exists in database
+  
+          $stmt = $con->prepare('SELECT Username, Password FROM users WHERE Username = ? AND Password = ?');
+          $stmt->execute(array($user, $hashedPass));
+          $count = $stmt->rowCount();
+          echo $count;
+  
+  
+          // If count > 0 this means that database cotains record about this username
+  
+          if ($count > 0) {
+              $_SESSION['user'] = $user; // Register session name
+              print_r($_SESSION);
+              header('Location: profile.php'); // Redirect to dashboard page
+              exit();
+          } else {
+              echo 'Error';
+          }
       } else {
-          echo 'Error';
       }
   }
 
@@ -49,17 +52,20 @@
     <input class="form-control" type="text" name="username" autocomplete="off" placeholder="Type your username" />
     <input class="form-control" type="password" name="password" autocomplete="new-password"
       placeholder="Type your password" />
-    <input class="btn btn-primary btn-block" type="submit" value="Log in" />
+    <input class="btn btn-primary btn-block" name='login' type="submit" value="Log in" />
   </form>
   <!-- End Login Form -->
   <!-- Start Signup Form -->
-  <form class="signup" action="">
+  <form class="signup"
+    action='<?php echo $_SERVER['PHP_SELF'] ?>'
+    method='POST'>
     <input class="form-control" type="text" name="username" autocomplete="off" placeholder="Type your username" />
     <input class="form-control" type="password" name="password" autocomplete="new-password"
       placeholder="Type your password" />
     <input class="form-control" type="email" name="email" placeholder="Type a valid email" />
-    <input class="btn btn-success btn-block" type="submit" value="Sign up" />
+    <input class="btn btn-success btn-block" name='signup' type="submit" value="Sign up" />
   </form>
   <!-- End Signup Form -->
+  .the-rror
 </div>
 <?php include $tpl . 'footer.php';
