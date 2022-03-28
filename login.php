@@ -1,31 +1,37 @@
 <?php
   session_start();
   $pageTitle = 'Login';
-  include 'init.php';
   
-  if (isset($_SESSION['userd'])) {
+  if (isset($_SESSION['user'])) {
       header('Location:index.php');
+      echo 'Hello2';
   }
-
+  
+  include 'init.php';
   // Check if user coming from HTTP post request
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $username = $_POST['username'];
-      $password = $_POST['password'];
-      $hashedPass = sha1($password);
+      $user = $_POST['username'];
+      $pass = $_POST['password'];
+      $hashedPass = sha1($pass);
 
       // Check if the user exists in database
 
       $stmt = $con->prepare('SELECT Username, Password FROM users WHERE Username = ? AND Password = ?');
-      $stmt->execute(array($username, $hashedPass));
+      $stmt->execute(array($user, $hashedPass));
       $count = $stmt->rowCount();
+      echo $count;
 
-      // If count > 0 this means that database cotain record about this username
+
+      // If count > 0 this means that database cotains record about this username
 
       if ($count > 0) {
-          $_SESSION['Username'] = $username; // Register session name
-          header('Location: dashboard.php'); // Redirect to dashboard page
+          $_SESSION['user'] = $user; // Register session name
+          print_r($_SESSION);
+          header('Location: profile.php'); // Redirect to dashboard page
           exit();
+      } else {
+          echo 'Error';
       }
   }
 
