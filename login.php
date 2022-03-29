@@ -38,7 +38,7 @@
           $formErrors = array();
 
           if (isset($_POST['username'])) {
-              $filteredUser = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+              $filteredUser = filter_var($_POST['username'], FILTER_UNSAFE_RAW);
               
               if (strlen($filteredUser) < 4) {
                   $formErrors[] = 'Username must be larger than 4 characters';
@@ -52,11 +52,33 @@
                   $formErrors[] = 'This Email Is Not Valid';
               }
           }
+          if (empty($formErrors)) {
+
+            // Check if user exist in database
+      
+              $check = checkItem('Username', 'users', $_POST['username']);
+      
+              if ($check == 1) {
+                  $formErrors[] = 'Sorry this user exists';
+              } else {
+                  // Insert userinfo in database
+                  $stmt = $con->prepare("INSERT INTO  users(Username, Password, Email, RegStatus, Date) VALUES(:zuser, :zpass, :zmail, 0, now())");
+                  $stmt->execute(array(
+                'zuser' => $_POST['username'],
+                'zpass' => sha1($_POST['password']),
+                'zmail' => $_POST['email']
+              ));
+                  // Echo Success Message
+                  $successMsg = 'Congrats you are now registered user';
+              }
+          } else {
+              $erroMsg = 'Sorry You can\'t browser this page directly';
+              redirectHome($erroMsg, 6);
+          }
       }
   }
-
-  ?>
-
+      
+          ?>
 
 <div class="container login-page">
   <h1 class="text-center"><span class="selected" data-class="login">Login</span> | <span
@@ -89,6 +111,9 @@
         foreach ($formErrors as $error) {
             echo $error . '<br />';
         }
+    }
+    if (isset($successMsg)) {
+        echo '<div class="msg success">' . $successMsg . '</div>';
     }
     ?>
   </div>
