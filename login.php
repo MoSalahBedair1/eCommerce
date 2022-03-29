@@ -40,8 +40,16 @@
           if (isset($_POST['username'])) {
               $filteredUser = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
               
-              if (strlen($filtered) < 4) {
+              if (strlen($filteredUser) < 4) {
                   $formErrors[] = 'Username must be larger than 4 characters';
+              }
+          }
+
+          if (isset($_POST['email'])) {
+              $filteredEmail = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+              
+              if (filter_var($filteredEmail, FILTER_VALIDATE_EMAIL) != true) {
+                  $formErrors[] = 'This Email Is Not Valid';
               }
           }
       }
