@@ -35,6 +35,15 @@
               echo 'Error';
           }
       } else {
+          $formErrors = array();
+
+          if (isset($_POST['username'])) {
+              $filteredUser = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+              
+              if (strlen($filtered) < 4) {
+                  $formErrors[] = 'Username must be larger than 4 characters';
+              }
+          }
       }
   }
 
@@ -66,6 +75,14 @@
     <input class="btn btn-success btn-block" name='signup' type="submit" value="Sign up" />
   </form>
   <!-- End Signup Form -->
-  .the-rror
+  <div class="the-errors text-center">
+    <?php
+    if (!empty($formErrors)) {
+        foreach ($formErrors as $error) {
+            echo $error . '<br />';
+        }
+    }
+    ?>
+  </div>
 </div>
 <?php include $tpl . 'footer.php';
