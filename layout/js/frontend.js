@@ -14,4 +14,16 @@ $(function () {
   $(".confirm").click(function () {
     return confirm("Are You Sure?");
   });
+
+  $(".live-name").keyup(function () {
+    $(".live-preview .caption h3").text($(this).val());
+  });
+
+  $(".live-desc").keyup(function () {
+    $(".live-preview .caption p").text($(this).val());
+  });
+
+  $(".live-price").keyup(function () {
+    $(".live-preview .price-tag").text($(this).val());
+  });
 });

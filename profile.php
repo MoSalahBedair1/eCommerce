@@ -52,18 +52,22 @@
       <div class="panel-body">
         <div class="row">
           <?php
-            foreach (getItems('Member_ID', $info['UserID']) as $item) {
-                echo '<div class="col-sm-6 col-md-4">';
-                echo '<div class="thumbnail item-box">';
-                echo '<span class="price-tag">' . $item['Price'] . '</span>';
-                echo '<img class="img-responsive" src="img.png" alt="" />';
-                echo '<div class="caption">';
-                echo '<h3>' . $item['Name'] . '</h3>';
-                echo '<p>' . $item['Descirption'] . '</p>';
-                echo '</div>';
-                echo '</div>';
-                echo '</div>';
-            } ?>
+          if (!empty(getItems('Member_ID', $info['UserID']))) {
+              foreach (getItems('Member_ID', $info['UserID']) as $item) {
+                  echo '<div class="col-sm-6 col-md-4">';
+                  echo '<div class="thumbnail item-box">';
+                  echo '<span class="price-tag">' . $item['Price'] . '</span>';
+                  echo '<img class="img-responsive" src="img.png" alt="" />';
+                  echo '<div class="caption">';
+                  echo '<h3>' . $item['Name'] . '</h3>';
+                  echo '<p>' . $item['Descirption'] . '</p>';
+                  echo '</div>';
+                  echo '</div>';
+                  echo '</div>';
+              }
+          } else {
+              echo 'Sorry There\'s No Ads To Show, Create <a href="newad.php">New Ad</a>';
+          } ?>
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@
   // Check if user coming from HTTP post request
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      if (isset($_POST[''])) {
+      if (isset($_POST['login'])) {
           $user = $_POST['username'];
           $pass = $_POST['password'];
           $hashedPass = sha1($pass);
