@@ -18,8 +18,9 @@
   
           // Check if the user exists in database
   
-          $stmt = $con->prepare('SELECT Username, Password FROM users WHERE Username = ? AND Password = ?');
+          $stmt = $con->prepare('SELECT UserID, Username, Password FROM users WHERE Username = ? AND Password = ?');
           $stmt->execute(array($user, $hashedPass));
+          $get = $stmt->fetch();
           $count = $stmt->rowCount();
           echo $count;
   
@@ -28,7 +29,7 @@
   
           if ($count > 0) {
               $_SESSION['user'] = $user; // Register session name
-              print_r($_SESSION);
+              $_SESSION['uid'] = $get['UserID']; // Register User ID in session
               header('Location: profile.php'); // Redirect to dashboard page
               exit();
           } else {

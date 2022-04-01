@@ -32,6 +32,24 @@
           if (empty($category)) {
               $formErrors[] = ' Item category must be not empty';
           }
+          if (empty($formErrors)) {
+              // Insert userinfo in database
+              $stmt = $con->prepare("INSERT INTO items(Name, Description, Price, Country_Made, Status, Add_Date, Cat_ID, Member_ID) VALUES(:zname, :zdesc, :zprice, :zcountry, :zstatus, now(), :zcat, :zmember)");
+              $stmt->execute(array(
+          'zname'    => $name,
+          'zdesc'    => $desc,
+          'zprice'   => $price,
+          'zcountry' => $country,
+          'zstatus'  => $status,
+          'zcat'     => $category,
+          'zmember'  => $_SESSION['uid']
+        ));
+              if ($stmt) {
+                  echo 'Item Added';
+              }
+          } else {
+              $erroMsg = 'Sorry You can\'t browser this page directly';
+          }
       } ?>
 
 <h1 class="text-center"><?php echo $pageTitle; ?>
@@ -107,16 +125,16 @@
           echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
       } ?>
                   </select>
-                  < /div>
                 </div>
-                <!-- End Category field -->
-                <!-- Start submit field -->
-                <div class="form-group form-group-lg">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <input type="submit" value="Add Item" class="btn btn-primary btn-sm">
-                  </div>
+              </div>
+              <!-- End Category field -->
+              <!-- Start submit field -->
+              <div class="form-group form-group-lg">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <input type="submit" value="Add Item" class="btn btn-primary btn-sm">
                 </div>
-                <!-- End submit field -->
+              </div>
+              <!-- End submit field -->
             </form>
           </div>
           <div class="col-md-4">
