@@ -146,4 +146,11 @@ h1 {
   background-color: #eee;
 }
 
+.thumbnail .date {
+  text-align: right;
+  font-size: 13px;
+  color: #aaa;
+  font-weight: bold;
+} 
+
 /* End Profile Page */ ;
