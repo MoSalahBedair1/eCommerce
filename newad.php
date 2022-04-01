@@ -6,7 +6,33 @@
 
   include 'init.php';
   
-  if (isset($_SESSION['user'])) { ?>
+  if (isset($_SESSION['user'])) {
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+          $formErrors = array();
+
+          $name = filter_var($_POST['name'], FILTER_UNSAFE_RAW);
+          $desc = filter_var($_POST['description'], FILTER_UNSAFE_RAW);
+          $price = filter_var($_POST['price'], FILTER_SANITIZE_NUMBER_INT);
+          $country = filter_var($_POST['country'], FILTER_UNSAFE_RAW);
+          $status = filter_var($_POST['status'], FILTER_SANITIZE_NUMBER_INT);
+          $category = filter_var($_POST['category'], FILTER_SANITIZE_NUMBER_INT);
+
+          if (strlen($name) < 4) {
+              $formErrors[] = 'Item title must be at least 4 characters';
+          }
+          if (strlen($desc) < 10) {
+              $formErrors[] = 'Item description must be at least 10 characters';
+          }
+          if (empty($price)) {
+              $formErrors[] = ' Item price must be not empty';
+          }
+          if (empty($status)) {
+              $formErrors[] = ' Item status must be not empty';
+          }
+          if (empty($category)) {
+              $formErrors[] = ' Item category must be not empty';
+          }
+      } ?>
 
 <h1 class="text-center"><?php echo $pageTitle; ?>
 </h1>
@@ -75,22 +101,22 @@
                     <option value="0">...</option>
                     <?php
           $stmt2 = $con->prepare("SELECT * FROM categories");
-          $stmt2->execute();
-          $cats = $stmt2->fetchAll();
-          foreach ($cats as $cat) {
-              echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
-          } ?>
+      $stmt2->execute();
+      $cats = $stmt2->fetchAll();
+      foreach ($cats as $cat) {
+          echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
+      } ?>
                   </select>
+                  < /div>
                 </div>
-              </div>
-              <!-- End Category field -->
-              <!-- Start submit field -->
-              <div class="form-group form-group-lg">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <input type="submit" value="Add Item" class="btn btn-primary btn-sm">
+                <!-- End Category field -->
+                <!-- Start submit field -->
+                <div class="form-group form-group-lg">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" value="Add Item" class="btn btn-primary btn-sm">
+                  </div>
                 </div>
-              </div>
-              <!-- End submit field -->
+                <!-- End submit field -->
             </form>
           </div>
           <div class="col-md-4">
@@ -104,6 +130,14 @@
             </div>
           </div>
         </div>
+        <!-- Start looping throught errors -->
+        <?php
+        if (!empty($formErrors)) {
+            foreach ($formErrors as $error) {
+                echo '<div class="alert alert-danger">' . $error . '</div>';
+            }
+        } ?>
+        <!-- End looping throught errors -->
       </div>
     </div>
   </div>
