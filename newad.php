@@ -2,18 +2,20 @@
 
   session_start();
 
-  $pageTitle = 'Create New Ad';
+  $pageTitle = 'Create New Item';
 
   include 'init.php';
   
   if (isset($_SESSION['user'])) { ?>
 
-<h1 class="text-center">Create New Ad</h1>
+<h1 class="text-center"><?php echo $pageTitle; ?>
+</h1>
 
 <div class="create-ad block">
   <div class="container">
     <div class="panel panel-primary">
-      <div class="panel-heading">Create New Ad</div>
+      <div class="panel-heading"><?php echo $pageTitle; ?>
+      </div>
       <div class="panel-body">
         <div class="row">
           <div class="col-md-8">
