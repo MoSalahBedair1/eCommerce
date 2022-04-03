@@ -114,10 +114,13 @@
     </div>
     <div class="col-md-9"> <?php
     foreach ($comments as $comment) {
+        echo '<div class="comment-box">';
         echo '<div class="row">';
-        echo '<div class="col-md-3">' . $comment['Member'] . '</div>';
-        echo '<div class="col-md-9">' . $comment['comment'] . '</div>';
+        echo '<div class="col-sm-2 text-center"><img class="img-responsive img-thumbnail img-circle center-block">' . $comment['Member'] . '</div>';
+        echo '<div class="col-sm-10">' . $comment['comment'] . '</div>';
         echo '</div>';
+        echo '</div>';
+        echo '<hr class="custom-hr">';
     } ?>
     </div>
   </div>
