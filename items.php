@@ -61,7 +61,7 @@
     </div>
   </div>
   <hr class="custom-hr">
-  <?php if (isset($_SESSION[user])) { ?>
+  <?php if (isset($_SESSION['user'])) { ?>
   <div class="row">
     <div class="col-md-offset-3">
       <div class="add-comment">
@@ -74,6 +74,23 @@
         </form>
         <?php
         if ($_SERVER["REQUSET_METHOD"] == 'POST') {
+            $comment = filter_var($_POST['comment'], FILTER_UNSAFE_RAW);
+            $itemid = $item['Item_ID'];
+            $userid = $item['Member_ID'];
+
+            if (!empty($comment)) {
+                $stmt = $con->prepare("INSERT INTO comments(comment, status, comment_date, item_id, user_id) VALUES(:zcomment, 0, NOW(), :zitemid, :zuserid");
+            }
+
+            $stmt->execute(array(
+            'zcomment' => $comment,
+            'zitemid' => $itemid,
+            'zuserid' => $userid
+          ));
+
+            if ($stmt) {
+                echo '<div class="alert alert-success">Comment Added</div>';
+            }
         }
         ?>
       </div>
