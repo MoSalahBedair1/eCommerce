@@ -76,7 +76,7 @@
         if ($_SERVER["REQUSET_METHOD"] == 'POST') {
             $comment = filter_var($_POST['comment'], FILTER_UNSAFE_RAW);
             $itemid = $item['Item_ID'];
-            $userid = $item['Member_ID'];
+            $userid = $_SESSION['uid'];
 
             if (!empty($comment)) {
                 $stmt = $con->prepare("INSERT INTO comments(comment, status, comment_date, item_id, user_id) VALUES(:zcomment, 0, NOW(), :zitemid, :zuserid");
@@ -100,12 +100,25 @@
             echo '<a href="login.php">Login</a> or Register To Add Comment';
         } ?>
   <hr class="custom-hr">
+  <?php
+      // Select All users except Amdin
+      $stmt = $con->prepare("SELECT comments.*, users.Username AS Member FROM comments INNER JOIN users ON users.UserID = comments.user_id WHERE item_id = ? AND status = 1 ORDER BY c_id DESC");
+      // Execute the statement
+      $stmt->execute();
+      // Assign to variable
+      $rows = $stmt->fetchAll(); ?>
+
   <div class="row">
     <div class="col-md-3">
 
     </div>
-    <div class="col-md-9">
-
+    <div class="col-md-9"> <?php
+    foreach ($comments as $comment) {
+        echo '<div class="row">';
+        echo '<div class="col-md-3">' . $comment['Member'] . '</div>';
+        echo '<div class="col-md-9">' . $comment['comment'] . '</div>';
+        echo '</div>';
+    } ?>
     </div>
   </div>
 </div>
