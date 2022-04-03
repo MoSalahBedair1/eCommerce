@@ -146,6 +146,11 @@ h1 {
   background-color: #eee;
 }
 
+.information ul li span {
+  display: inline-block;
+  width: 120px;
+}
+
 .thumbnail .date {
   text-align: right;
   font-size: 13px;
@@ -154,3 +159,32 @@ h1 {
 } 
 
 /* End Profile Page */ ;
+
+/* Start Show Item Page */
+
+.item-info p {
+  padding: 10px;
+}
+
+.item-info ul li {
+  padding: 10px;
+}
+
+.item-info ul li:nth-child(odd) {
+  background-color: #eee;
+}
+
+.item-info ul li span {
+  display: inline-block;
+  width: 120px;
+}
+
+/* End Show Item Page */
+
+/* Start Our Custom */
+
+.custom-hr {
+  border-top: 1px solid #c9c9c9;
+}
+
+/* End Our Custom */
