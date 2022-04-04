@@ -17,20 +17,24 @@
   <div class="upper-bar">
     <div class="container">
       <?php
-        if (isset($_SESSION['user'])) {
-            echo 'Welcome ' . $sessionUser;
+        if (isset($_SESSION['user'])) { ?>
 
-            echo '<a href="profile.php">My Profile</a>';
+      <img class="my-image img-thumbnail img-circle" src="img.png" alt="">
+      <div class="btn-group my-info">
+        <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <?php echo $sessionUser ?>
+          <span class="caret"></span>
+          <ul class="dropdown-menu">
+            <li><a href="profile.php"></a>My Profile</li>
+            <li><a href="newad.php"></a>New Item</li>
+            <li><a href="profile.php#my-items"></a>My Items</li>
+            <li><a href="logout.php"></a>Logout</li>
+          </ul>
+        </span>
+      </div>
 
-            echo '<a href="newad.php">New Item</a>';
-            
-            echo '<a href="logout.php">Log Out</a>';
-
-            $userStatus = checkUserStatus($sessionUser);
-            if ($userStatus == 1) {
-                //
-            }
-        } else { ?>
+      <?php
+      } else { ?>
       <a href="login.php">
         <span class="pull-right">Login/Signup</span>
       </a>

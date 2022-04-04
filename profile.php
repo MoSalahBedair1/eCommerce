@@ -45,7 +45,7 @@
   </div>
 </div>
 
-<div class="my-advertisements block">
+<div id="my-items" class="my-advertisements block">
   <div class="container">
     <div class="panel panel-primary">
       <div class="panel-heading">My Ads</div>
