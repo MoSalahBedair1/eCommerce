@@ -53,9 +53,12 @@
         <div class="row">
           <?php
           if (!empty(getItems('Member_ID', $info['UserID']))) {
-              foreach (getItems('Member_ID', $info['UserID']) as $item) {
+              foreach (getItems('Member_ID', $info['UserID'], 1) as $item) {
                   echo '<div class="col-sm-6 col-md-4">';
                   echo '<div class="thumbnail item-box">';
+                  if ($item['Approve'] == 0) {
+                      echo 'Not Approved';
+                  }
                   echo '<span class="price-tag">' . $item['Price'] . '</span>';
                   echo '<img class="img-responsive" src="img.png" alt="" />';
                   echo '<div class="caption">';
