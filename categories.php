@@ -15,6 +15,7 @@
       echo '<div class="caption">';
       echo '<h3>' . $item['Name'] . '</h3>';
       echo '<p>' . $item['Descirption'] . '</p>';
+      echo '<div class="date">' . $item['Add_Date'] . '</div>';
       echo '</div>';
       echo '</div>';
       echo '</div>';

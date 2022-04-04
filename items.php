@@ -69,7 +69,7 @@
         <form
           action="<?php echo $_SERVER['PHP_SELF'] . '?itemid=' . $item['Item_ID']?>"
           method="POST">
-          <textarea name="comment"></textarea>
+          <textarea name="comment" required></textarea>
           <input class="btn btn-primary" type="submit" value="Add Comment">
         </form>
         <?php
