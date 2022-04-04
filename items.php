@@ -10,7 +10,7 @@
   $itemid = isset($_GET['itemid']) && is_numeric($_GET['itemid']) ? intval($_GET['itemid']) : 0;
 
   // Select all data depend on this id
-  $stmt = $con->prepare('SELECT items.*, categories.Name AS category_name, users.Username FROM items INNER JOIN categories ON categories.ID = items.Cat_ID INNER JOIN users ON users.UserID = items.Member_ID WHERE Item_ID = ?');
+  $stmt = $con->prepare('SELECT items.*, categories.Name AS category_name, users.Username FROM items INNER JOIN categories ON categories.ID = items.Cat_ID INNER JOIN users ON users.UserID = items.Member_ID WHERE Item_ID = ? AND Approve = 1');
 
   // Execute query
   $stmt->execute(array($itemid));
@@ -128,7 +128,7 @@
 
 <?php
   } else {
-      echo 'There\'s no such ID';
+      echo 'There\'s no such ID or this item is waiting approval';
   }
 
   include $tpl . 'footer.php';

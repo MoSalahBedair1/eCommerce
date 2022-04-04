@@ -57,7 +57,7 @@
                   echo '<div class="col-sm-6 col-md-4">';
                   echo '<div class="thumbnail item-box">';
                   if ($item['Approve'] == 0) {
-                      echo 'Not Approved';
+                      echo '<span class="approve-status">Waiting Approval</span>';
                   }
                   echo '<span class="price-tag">' . $item['Price'] . '</span>';
                   echo '<img class="img-responsive" src="img.png" alt="" />';

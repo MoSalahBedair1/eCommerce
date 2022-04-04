@@ -22,7 +22,7 @@
 
             echo '<a href="profile.php">My Profile</a>';
 
-            echo '<a href="newad.php">New Ad</a>';
+            echo '<a href="newad.php">New Item</a>';
             
             echo '<a href="logout.php">Log Out</a>';
 
