@@ -82,7 +82,7 @@
           echo "</div>";
 
           // Get Child Categories
-          $childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID", "ASC");
+          $childCats = getAllFrom("*", "categories", "ID", "where parent = {$cat['ID']}", "", "ASC");
           if (! empty($childCats)) {
               echo "<h4 class='child-head'>Child Categories</h4>";
               echo "<ul class='list-unstyled child-cats'>";
@@ -151,7 +151,7 @@
         <select name="parent">
           <option value="0">None</option>
           <?php
-          $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID", "ASC");
+          $allCats = getAllFrom("*", "categories", "ID", "where parent = 0", "", "ASC");
           foreach ($allCats as $cat) {
               echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
           }
@@ -339,7 +339,7 @@
         <select name="parent">
           <option value="0">None</option>
           <?php
-            $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID", "ASC");
+            $allCats = getAllFrom("*", "categories", "ID", "where parent = 0", "", "ASC");
             foreach ($allCats as $c) {
                 echo "<option value='" . $c['ID'] . "'";
                 if ($cat['parent'] == $c['ID']) {
