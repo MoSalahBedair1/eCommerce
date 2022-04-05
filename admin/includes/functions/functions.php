@@ -1,11 +1,25 @@
 <?php
 
-/*
- ** Title function v1.0
- ** Title function that echo the page title in case the page
- **  has the variable $pageTitle and echo default title for other pages
- */
+  /*
+  ** Get All Function v2.0
+  ** Function To Get All Records From Any Database Table
+  */
 
+  function getAllFrom($field, $table, $where = null, $and = null, $orderfield, $ordering = "DESC")
+  {
+      global $con;
+      $getAll = $con->prepare("SELECT $field FROM $table $where $and ORDER BY $orderfield $ordering");
+      $getAll->execute();
+      $all = $getAll->fetchAll();
+      return $all;
+  }
+
+
+  /*
+  ** Title Function v1.0
+  ** Title Function That Echo The Page Title In Case The Page
+  ** Has The Variable $pageTitle And Echo Defult Title For Other Pages
+  */
 
   function getTitle()
   {
@@ -17,83 +31,80 @@
       }
   }
 
+  /*
+  ** Home Redirect Function v2.0
+  ** This Function Accept Parameters
+  ** $theMsg = Echo The Message [ Error | Success | Warning ]
+  ** $url = The Link You Want To Redirect To
+  ** $seconds = Seconds Before Redirecting
+  */
 
-/*
- ** Redirect function v2.0
- ** This function accepts parameters
- ** $theMsg = Echo the message [ error | success | warning ]
- ** $url = The link you want to redirect to
- ** $seconds = seconds before redirecting
- */
-
-  function redirect($theMsg, $url = null, $seconds = 3)
+  function redirectHome($theMsg, $url = null, $seconds = 3)
   {
       if ($url === null) {
           $url = 'index.php';
+          $link = 'Homepage';
       } else {
           if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] !== '') {
               $url = $_SERVER['HTTP_REFERER'];
-              $link = 'Previous page';
+              $link = 'Previous Page';
           } else {
               $url = 'index.php';
               $link = 'Homepage';
           }
       }
-
       echo $theMsg;
-      echo "<div class='alert alert-info'>You will be redirected to $link after $seconds  seconds.</div>";
+      echo "<div class='alert alert-info'>You Will Be Redirected to $link After $seconds Seconds.</div>";
       header("refresh:$seconds;url=$url");
       exit();
   }
 
-/*
-** Check items function v1.0
-** Function to check item in database [ function accept parameters ]
-** $select = The item to select [ Example: user, item, category ]
-** $from = The table to select from [ Example: users, items, categories ]
-** $value = The value of select [ Example: Osama, Box, Electronics ]
-*/
+  /*
+  ** Check Items Function v1.0
+  ** Function to Check Item In Database [ Function Accept Parameters ]
+  ** $select = The Item To Select [ Example: user, item, category ]
+  ** $from = The Table To Select From [ Example: users, items, categories ]
+  ** $value = The Value Of Select [ Example: Osama, Box, Electronics ]
+  */
 
-function checkItem($select, $from, $value)
-{
-    global $con;
+  function checkItem($select, $from, $value)
+  {
+      global $con;
+      $statement = $con->prepare("SELECT $select FROM $from WHERE $select = ?");
+      $statement->execute(array($value));
+      $count = $statement->rowCount();
+      return $count;
+  }
 
-    $statement = $con->prepare("SELECT $select FROM $from WHERE $select = ?");
-    $statement->execute(array($value));
-    $count = $statement->rowCount();
+    /*
+    ** Count Number Of Items Function v1.0
+    ** Function To Count Number Of Items Rows
+    ** $item = The Item To Count
+    ** $table = The Table To Choose From
+    */
 
-    return $count;
-}
+  function countItems($item, $table)
+  {
+      global $con;
+      $stmt2 = $con->prepare("SELECT COUNT($item) FROM $table");
+      $stmt2->execute();
+      return $stmt2->fetchColumn();
+  }
 
-/*
-** Count number of items function v1.0
-** function to count number of items rows
-** $item = the item to count
-** $table = the table to choose from
-*/
+    /*
+    ** Get Latest Records Function v1.0
+    ** Function To Get Latest Items From Database [ Users, Items, Comments ]
+    ** $select = Field To Select
+    ** $table = The Table To Choose From
+    ** $order = The Desc Ordering
+    ** $limit = Number Of Records To Get
+    */
 
-function countItems($item, $table)
-{
-    global $con;
-    $stmt2 = $con->prepare("SELECT COUNT($item) FROM $table");
-    $stmt2->execute();
-    return $stmt2->fetchColumn();
-}
-
-/*
-** Get latest records function v1.0
-** Function to get latest items from database [Users, Items, Comments]
-** $select = Field To Select
-** $table = The table to choose from
-** $order = the desc ordering
-** $limit = Number of records to get
-*/
-
-function getLatest($select, $table, $order, $limit = 5)
-{
-    global $con;
-    $getStmt = $con->prepare("SELECT $select FROM $table ORDER BY $order DESC LIMIT $limit");
-    $getStmt->execute();
-    $rows = $getStmt->fetchAll();
-    return $rows;
-}
+  function getLatest($select, $table, $order, $limit = 5)
+  {
+      global $con;
+      $getStmt = $con->prepare("SELECT $select FROM $table ORDER BY $order DESC LIMIT $limit");
+      $getStmt->execute();
+      $rows = $getStmt->fetchAll();
+      return $rows;
+  }
