@@ -1,11 +1,11 @@
 <?php
 
-  session_start(); // Start the session
+	session_start(); // Start The Session
 
-  session_unset(); // Unset the data
+	session_unset(); // Unset The Data
 
-  session_destroy(); // Destroy the session
+	session_destroy(); // Destory The Session
 
-  header('Location: index.php');
-  
-  exit();
+	header('Location: index.php');
+
+	exit();

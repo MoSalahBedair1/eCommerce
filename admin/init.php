@@ -1,23 +1,24 @@
 <?php
 
-  include 'connect.php';
+	include 'connect.php';
 
-  // Routes
+	// Routes
 
-  $tpl  = 'includes/templates/'; // Templates Directory
-  $lang = 'includes/languages/'; // Language Directory
-  $func = 'includes/functions/'; // Functions Directory
-  $css = 'layout/css/'; // css Directory
-  $js = 'layout/js/'; // js Directory
+	$tpl 	= 'includes/templates/'; // Template Directory
+	$lang 	= 'includes/languages/'; // Language Directory
+	$func	= 'includes/functions/'; // Functions Directory
+	$css 	= 'layout/css/'; // Css Directory
+	$js 	= 'layout/js/'; // Js Directory
 
-  // Include the important files
+	// Include The Important Files
 
-  include $func . 'functions.php';
-  include $lang . 'english.php';
-  include $tpl . 'header.php';
+	include $func . 'functions.php';
+	include $lang . 'english.php';
+	include $tpl . 'header.php';
 
-  // Include the navbar on all pages except the one with $noNavbar variable
+	// Include Navbar On All Pages Expect The One With $noNavbar Vairable
 
-  if (!isset($noNavbar)) {
-      include $tpl . 'navbar.php';
-  }
+	if (!isset($noNavbar)) { include $tpl . 'navbar.php'; }
+	
+
+	
