@@ -36,9 +36,10 @@
 
                 } else {
                     ?>
-      <a href="login.php">
-        <span class="pull-right">Login/Signup</span>
-      </a>
+      <div class="pull-right">
+        <a href="login.php"><span class="btn btn-sm btn-default">Login / Sign up</span></a>
+        <!-- <a href="login.php"><span class="btn btn-sm btn-default">Sign Up</span></a> -->
+      </div>
       <?php
                 } ?>
     </div>
