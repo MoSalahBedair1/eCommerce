@@ -60,7 +60,7 @@
       <div class="collapse navbar-collapse" id="app-nav">
         <ul class="nav navbar-nav navbar-right">
           <?php
-              $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID", "ASC");
+              $allCats = getAllFrom("*", "categories", "ID", "where parent = 0", "", "ASC");
             foreach ($allCats as $cat) {
                 echo
                 '<li>
