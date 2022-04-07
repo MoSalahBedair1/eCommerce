@@ -38,7 +38,9 @@
                     ?>
       <div class="pull-right">
         <a href="login.php"><span class="btn btn-sm btn-default">Login / Sign up</span></a>
-        <!-- <a href="login.php"><span class="btn btn-sm btn-default">Sign Up</span></a> -->
+      </div>
+      <div class="pull-left">
+        <a href="index.php"><span class="brand-name">eCommerce Website</span></a>
       </div>
       <?php
                 } ?>
