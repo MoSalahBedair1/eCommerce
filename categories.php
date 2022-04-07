@@ -4,12 +4,15 @@
 ?>
 
 <div class="container">
-	<h1 class="text-center">Show Category Items</h1>
-	<div class="row">
-		<?php
+    <h1 class="text-center">Show Category Items</h1>
+    <div class="row">
+        <?php
         if (isset($_GET['pageid']) && is_numeric($_GET['pageid'])) {
             $category = intval($_GET['pageid']);
-            $allItems = getAllFrom("*", "items", "Item_ID", "where Cat_ID = {$category}", "AND Approve = 1");
+            $getAllItems = $con->prepare("SELECT * FROM items WHERE Cat_ID = $category AND Approve = 1 ORDER BY Item_ID");
+            $getAllItems->execute();
+            $allItems = $getAllItems->fetchAll();
+            // $allItems = getAllFrom("*", "items", "Item_ID", "where Cat_ID = {$category}", "AND Approve = 1");
             foreach ($allItems as $item) {
                 echo '<div class="col-sm-6 col-md-3">';
                 echo '<div class="thumbnail item-box">';
@@ -27,7 +30,7 @@
             echo 'You Must Add Page ID';
         }
         ?>
-	</div>
+    </div>
 </div>
 
 <?php include $tpl . 'footer.php';

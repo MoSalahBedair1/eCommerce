@@ -85,7 +85,7 @@
             <tr>
         </table>
     </div>
-    <a href="items.php?do=Add" class="btn btn-sm btn-primary">
+    <a href="items.php?do=Add" class="btn btn-primary">
         <i class="fa fa-plus"></i> New Item
     </a>
 </div>
@@ -146,7 +146,7 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Status</label>
             <div class="col-sm-10 col-md-6">
-                <select name="status">
+                <select name="status" class="form-control">
                     <option value="0">...</option>
                     <option value="1">New</option>
                     <option value="2">Like New</option>
@@ -160,14 +160,16 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Member</label>
             <div class="col-sm-10 col-md-6">
-                <select name="member">
+                <select name="member" class="form-control">
                     <option value="0">...</option>
                     <?php
-                                    $allMembers = getAllFrom("*", "users", "UserID", "", "");
-                                    foreach ($allMembers as $user) {
-                                        echo "<option value='" . $user['UserID'] . "'>" . $user['Username'] . "</option>";
-                                    }
-                                ?>
+                        $getAllMembers = $con->prepare("SELECT * FROM users ORDER BY UserID");
+                        $getAllMembers->execute();
+                        $allMembers = $getAllMembers->fetchAll();
+                        foreach ($allMembers as $user) {
+                            echo "<option value='" . $user['UserID'] . "'>" . $user['Username'] . "</option>";
+                        }
+                    ?>
                 </select>
             </div>
         </div>
@@ -176,16 +178,14 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Category</label>
             <div class="col-sm-10 col-md-6">
-                <select name="category">
+                <select name="category" class="form-control">
                     <option value="0">...</option>
                     <?php
-                                    $allCats = getAllFrom("*", "categories", "ID", "where parent = 0", "");
+                                    $getAllCats = $con->prepare("SELECT * FROM categories ORDER BY ID");
+                                    $getAllCats->execute();
+                                    $allCats = $getAllCats->fetchAll();
                                     foreach ($allCats as $cat) {
                                         echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
-                                        $childCats = getAllFrom("*", "categories", "ID", "where parent = {$cat['ID']}", "");
-                                        foreach ($childCats as $child) {
-                                            echo "<option value='" . $child['ID'] . "'>--- " . $child['Name'] . "</option>";
-                                        }
                                     }
                                 ?>
                 </select>
@@ -203,7 +203,7 @@
         <!-- Start Submit Field -->
         <div class="form-group form-group-lg">
             <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" value="Add Item" class="btn btn-primary btn-sm" />
+                <input type="submit" value="Add Item" class="btn btn-primary" />
             </div>
         </div>
         <!-- End Submit Field -->
@@ -380,7 +380,7 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Status</label>
             <div class="col-sm-10 col-md-6">
-                <select name="status">
+                <select name="status" class="form-control">
                     <option value="1" <?php if ($item['Status'] == 1) {
                 echo 'selected';
             } ?>>New
@@ -407,17 +407,19 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Member</label>
             <div class="col-sm-10 col-md-6">
-                <select name="member">
+                <select name="member" class="form-control">
                     <?php
-                                        $allMembers = getAllFrom("*", "users", "UserID", "", "");
-                                        foreach ($allMembers as $user) {
-                                            echo "<option value='" . $user['UserID'] . "'";
-                                            if ($item['Member_ID'] == $user['UserID']) {
-                                                echo 'selected';
-                                            }
-                                            echo ">" . $user['Username'] . "</option>";
-                                        }
-                                    ?>
+                        $getAllMembers = $con->prepare("SELECT * FROM users ORDER BY UserID");
+                        $getAllMembers->execute();
+                        $allMembers = $getAllMembers->fetchAll();
+                        foreach ($allMembers as $user) {
+                            echo "<option value='" . $user['UserID'] . "'>" . $user['Username'] . "</option>";
+                            if ($item['Member_ID'] == $user['UserID']) {
+                                echo 'selected';
+                            }
+                            echo ">" . $user['Username'] . "</option>";
+                        }
+                    ?>
                 </select>
             </div>
         </div>
@@ -426,25 +428,19 @@
         <div class="form-group form-group-lg">
             <label class="col-sm-2 control-label">Category</label>
             <div class="col-sm-10 col-md-6">
-                <select name="category">
+                <select name="category" class="form-control">
                     <?php
-                                        $allCats = getAllFrom("*", "categories", "ID", "where parent = 0", "");
-                                        foreach ($allCats as $cat) {
-                                            echo "<option value='" . $cat['ID'] . "'";
-                                            if ($item['Cat_ID'] == $cat['ID']) {
-                                                echo ' selected';
-                                            }
-                                            echo ">" . $cat['Name'] . "</option>";
-                                            $childCats = getAllFrom("*", "categories", "ID", "where parent = {$cat['ID']}", "");
-                                            foreach ($childCats as $child) {
-                                                echo "<option value='" . $child['ID'] . "'";
-                                                if ($item['Cat_ID'] == $child['ID']) {
-                                                    echo ' selected';
-                                                }
-                                                echo ">--- " . $child['Name'] . "</option>";
-                                            }
-                                        }
-                                    ?>
+                    $getAllCats = $con->prepare("SELECT * FROM categories ORDER BY ID");
+                    $getAllCats->execute();
+                    $allCats = $getAllCats->fetchAll();
+                    foreach ($allCats as $cat) {
+                        echo "<option value='" . $cat['ID'] . "'";
+                        if ($item['Cat_ID'] == $cat['ID']) {
+                            echo ' selected';
+                        }
+                        echo ">" . $cat['Name'] . "</option>";
+                    }
+                    ?>
                 </select>
             </div>
         </div>
@@ -461,36 +457,21 @@
         <!-- Start Submit Field -->
         <div class="form-group form-group-lg">
             <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" value="Save Item" class="btn btn-primary btn-sm" />
+                <input type="submit" value="Save Item" class="btn btn-primary" />
             </div>
         </div>
         <!-- End Submit Field -->
     </form>
 
     <?php
-
-                    // Select All Users Except Admin
-
-                    $stmt = $con->prepare("SELECT 
-												comments.*, users.Username AS Member  
-											FROM 
-												comments
-											INNER JOIN 
-												users 
-											ON 
-												users.UserID = comments.user_id
-											WHERE item_id = ?");
-
-                    // Execute The Statement
-
-                    $stmt->execute(array($itemid));
-
-                    // Assign To Variable
-
-                    $rows = $stmt->fetchAll();
-
-                    if (! empty($rows)) {
-                        ?>
+        // Select All Users Except Admin
+        $stmt = $con->prepare("SELECT comments.*, users.Username AS Member  FROM comments INNER JOIN users ON users.UserID = comments.user_id WHERE item_id = ?");
+        // Execute The Statement
+        $stmt->execute(array($itemid));
+        // Assign To Variable
+        $rows = $stmt->fetchAll();
+        if (! empty($rows)) {
+            ?>
     <h1 class="text-center">Manage [ <?php echo $item['Name'] ?> ] Comments</h1>
     <div class="table-responsive">
         <table class="main-table text-center table table-bordered">
@@ -522,7 +503,7 @@
         </table>
     </div>
     <?php
-                    } ?>
+        } ?>
 </div>
 
 <?php

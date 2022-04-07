@@ -7,13 +7,13 @@
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $formErrors = array();
 
-            $name 		= filter_var($_POST['name'], FILTER_SANITIZE_STRING);
-            $desc 		= filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+            $name 		= filter_var($_POST['name'], FILTER_UNSAFE_RAW);
+            $desc 		= filter_var($_POST['description'], FILTER_UNSAFE_RAW);
             $price 		= filter_var($_POST['price'], FILTER_SANITIZE_NUMBER_INT);
-            $country 	= filter_var($_POST['country'], FILTER_SANITIZE_STRING);
+            $country 	= filter_var($_POST['country'], FILTER_UNSAFE_RAW);
             $status 	= filter_var($_POST['status'], FILTER_SANITIZE_NUMBER_INT);
             $category 	= filter_var($_POST['category'], FILTER_SANITIZE_NUMBER_INT);
-            $tags 		= filter_var($_POST['tags'], FILTER_SANITIZE_STRING);
+            $tags 		= filter_var($_POST['tags'], FILTER_UNSAFE_RAW);
 
             if (strlen($name) < 4) {
                 $formErrors[] = 'Item Title Must Be At Least 4 Characters';
@@ -124,7 +124,7 @@
               <div class="form-group form-group-lg">
                 <label class="col-sm-3 control-label">Status</label>
                 <div class="col-sm-10 col-md-9">
-                  <select name="status" required>
+                  <select name="status" class="form-control" required>
                     <option value="">...</option>
                     <option value="1">New</option>
                     <option value="2">Like New</option>
@@ -138,7 +138,7 @@
               <div class="form-group form-group-lg">
                 <label class="col-sm-3 control-label">Category</label>
                 <div class="col-sm-10 col-md-9">
-                  <select name="category" required>
+                  <select name="category" class="form-control" required>
                     <option value="">...</option>
                     <?php
                       $cats = getAllFrom('*', 'categories', 'ID', '', '', );
@@ -160,7 +160,7 @@
               <!-- Start Submit Field -->
               <div class="form-group form-group-lg">
                 <div class="col-sm-offset-3 col-sm-9">
-                  <input type="submit" value="Add Item" class="btn btn-primary btn-sm" />
+                  <input type="submit" value="Add Item" class="btn btn-primary" />
                 </div>
               </div>
               <!-- End Submit Field -->

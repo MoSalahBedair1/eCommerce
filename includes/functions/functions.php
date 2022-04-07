@@ -5,16 +5,27 @@
     ** Function To Get All Records From Any Database Table
     */
 
-    function getAllFrom($field, $table, $orderfield, $where = null, $and = null, $ordering = "DESC")
+    function getAllFrom($field, $table, $orderfield, $where = ' ', $and = ' ', $ordering = "DESC")
     {
         global $con;
-
         $getAll = $con->prepare("SELECT $field FROM $table $where $and ORDER BY $orderfield $ordering");
-
         $getAll->execute();
-
         $all = $getAll->fetchAll();
+        return $all;
+    }
+    
 
+    /*
+    ** Get Users Function v2.0
+    ** Function To Get All Users From users Table
+    */
+
+    function getUsers()
+    {
+        global $con;
+        $getAll = $con->prepare("SELECT * FROM users ORDER BY UserID");
+        $getAll->execute();
+        $all = $getAll->fetchAll();
         return $all;
     }
     
@@ -121,19 +132,8 @@
     function checkUserStatus($user)
     {
         global $con;
-
-        $stmtx = $con->prepare("SELECT 
-									Username, RegStatus 
-								FROM 
-									users 
-								WHERE 
-									Username = ? 
-								AND 
-									RegStatus = 0");
-
+        $stmtx = $con->prepare("SELECT Username, RegStatus FROM users WHERE Username = ? AND RegStatus = 0");
         $stmtx->execute(array($user));
-
         $status = $stmtx->rowCount();
-
         return $status;
     }

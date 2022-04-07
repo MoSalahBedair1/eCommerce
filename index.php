@@ -5,9 +5,12 @@
     include 'init.php';
 ?>
 <div class="container">
-	<div class="row">
-		<?php
-            $allItems = getAllFrom('*', 'items', 'Item_ID', 'where Approve = 1', '');
+    <div class="row store-page">
+        <?php
+            $getAllItems = $con->prepare("SELECT * FROM items WHERE Approve = 1 ORDER BY Item_ID");
+            $getAllItems->execute();
+            $allItems = $getAllItems->fetchAll();
+            // $allItems = getAllFrom('*', 'items', 'Item_ID', 'where Approve = 1', '');
             foreach ($allItems as $item) {
                 echo '<div class="col-sm-6 col-md-3">';
                 echo '<div class="thumbnail item-box">';
@@ -22,7 +25,7 @@
                 echo '</div>';
             }
         ?>
-	</div>
+    </div>
 </div>
 <?php
     include $tpl . 'footer.php';
