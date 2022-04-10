@@ -5,6 +5,7 @@
 ## Screenshots & How to use:
 
 ### Admin Panel
+to enter admin panel just add `/admin` at the end of the URL <br>
 **admin login**: username = `admin` | password = `1234`
 
 ![](/Screenshots/adminLogin.png)
