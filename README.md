@@ -14,4 +14,10 @@ to enter admin panel just add `/admin` at the end of the URL <br>
 ![](/Screenshots/comments.png)
 ![](/Screenshots/members.png)
 
+### Store
+### Homepage
+![](/Screenshots/homepage.png)
+
+### Add new item
+![](/Screenshots/createNewItem.png)
 
